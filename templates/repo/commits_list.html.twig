@@ -1,0 +1,30 @@
+{% if commits %}
+{% for commit in commits %}
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+           <th colspan="3">{{ commit.date | date("F j, Y") }}</th>
+        </tr>
+    </thead>
+    <tbody>
+    {# {% for item in commit %} #}
+        <tr>
+            <td width="5%"><img src="{{ gravatar( commit.email, 40, 'defaultimage.png', false ) }}" /></td>
+            <td width="95%">
+                <span class="pull-right"><a class="btn btn-small" href="{{ path('commits_view', {repo: repo.name, commit: commit.hash, tree:branch, path:'/', user:user.username}) }}"><i class="icon-list-alt"></i> View {{ commit.Shorthash }}</a></span>
+                <h4>{{ commit.message }}</h4>
+                <span>
+                    <a href="mailto:{{ commit.email }}">{{ commit.name }}</a> committed on {{ commit.date }}
+                </span>
+            </td>
+        </tr>
+        {# {% endfor %} #}
+    </tbody>
+</table>
+{% endfor %}
+<div class="navigation">
+            {{ knp_pagination_render(commits) }}
+        </div>
+{% else %}
+<p>No results found.</p>
+{% endif %}

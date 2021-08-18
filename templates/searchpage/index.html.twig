@@ -1,0 +1,70 @@
+{% extends "userbase.html.twig" %}
+
+{% block title %}Repo {{ repo.name }}{% endblock %}
+
+{% block body %}
+    {{ include("includes/unavbar.html.twig") }}
+    {{ include("includes/profile.html.twig") }}
+ <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-8">
+      <div class="mdc-card">
+          <div class="mdc-layout-grid__inner">
+            <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+{% if git.branches|length == 0 %}
+
+                    <section class="purchase__card_section">
+                        <h3 >Repo: <span class="text-red">{{ repo.name }}</span></h3>
+                            <h3>Empty repository</h3>
+
+                            <b>Usage:</b>
+                            <pre>
+                    $ git clone git@ubucket.io:/repos/user/repo.git
+
+                    $ touch README.md
+                    $ git add README.md
+                    $ git commit -m "initial commit"
+                    $ git push origin master
+                            </pre>
+                  </section>
+
+{% else %}
+  <section class="purchase__card_section">
+    <h2>Branches</h2>
+
+    <form class="form-inline">
+        <div class="form-group">
+            <label for="branch_select">Select branch:</label>
+            <select id="branch_select" class="input-sm form-control">
+            {% for name, sha in git.branches %}
+                <option data-href="{{ path('repo_tree', { 'user' : repo.userId.username, 'repo' : repo.name, 'tree' : name, 'path' : '/' }) }}">{{ name }}</option>
+            {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <button id="branch_submit" class="input-sm form-control btn btn-success btn-xs">Go <i class="mdi mdi-24px mdi-play"></i></button>
+        </div>
+    </form>
+
+    <h2>Tags</h2>
+    {% for tag,sha in git.tags %}
+        <span class="label label-info">{{ tag }}</span>
+    {% endfor %} 
+ </section>
+ {% endif %}  
+ </div>
+ </div>
+ </div>
+ </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+        $(document).ready(function() {
+           $('#branch_submit').click(function (e) {
+               window.location = $('#branch_select option:selected').data('href');
+               e.preventDefault();
+           });
+        });
+    </script>
+{% endblock %}

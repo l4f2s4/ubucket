@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+         <title>{% block title %}Welcome!{% endblock %}</title>
+        <link href=" {{ asset('assets/bootstrap/css/bootstrap.css') }}" rel="stylesheet">
+		<link href=" {{ asset('assets/css/style.css')}}" rel="stylesheet">
+        <link href=" {{ asset('assets/css/style3.css')}}" rel="stylesheet">
+        <link href="/assets/css/style1.css" rel="stylesheet" type="text/css">
+        <link href="/assets/gitgraph.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="{{ asset('global/global.css')}}">
+        <script src="{{ asset('assets/jquery/jquery.min.js') }}"></script>
+        {# <script src="{{ asset('assets/bootstrap/js/bootstrap.min.js') }}"></script> #}
+        <script src="{{ asset('assets/validate.js') }}"></script>
+         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+          {% block stylesheets %}
+          {% endblock %}
+    </head>
+
+    <body>
+        {% block body %}{% endblock %}
+        {% block javascripts %}
+        <script type="application/javascript" src="{{ app.request.basepath }}/themes/{{ theme }}/js/jquery.js"></script>
+        <script type="application/javascript" src="{{ app.request.basepath }}/themes/{{ theme }}/js/raphael.js"></script>
+        <script type="application/javascript" src="{{ app.request.basepath }}/themes/{{ theme }}/js/bootstrap.js"></script>
+        <script type="application/javascript" src="{{ app.request.basepath }}/themes/{{ theme }}/js/codemirror.js"></script>
+        <script type="application/javascript" src="{{ app.request.basepath }}/themes/{{ theme }}/js/showdown.js"></script>
+        <script type="application/javascript" src="{{ app.request.basepath }}/themes/{{ theme }}/js/table.js"></script>
+        <script type="application/javascript" src="{{ app.request.basepath }}/themes/{{ theme }}/js/list.min.js"></script>
+        <script type="application/javascript" src="{{ app.request.basepath }}/themes/{{ theme }}/js/main.js"></script>
+        <script type="application/javascript" src="{{ app.request.basepath }}/themes/{{ theme }}/js/networkGraph.js"></script>
+        <script type="application/javascript" src="{{ app.request.basepath }}/themes/{{ theme }}/js/gitgraph.js"></script>
+        <script type="application/javascript" src="{{ app.request.basepath }}/themes/{{ theme }}/js/draw.js"></script>
+        {% endblock %}
+    </body>
+</html>

@@ -1,0 +1,161 @@
+{% extends 'userbase.html.twig' %}
+{% block body %}
+{% if app.user %}
+  {% include('profile/usermenu.html.twig') %}
+
+  <div class="page-wrapper mdc-toolbar-fixed-adjust">
+      <main class="content-wrapper">
+      <!-- start -->
+        <div class="mdc-layout-grid">
+          <div class="mdc-layout-grid__inner">
+            <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+              <div class="mdc-card">
+                <div class="mdc-layout-grid__inner">
+                  <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-9">
+                    <section class="purchase__card_section">
+                      <p class="text-red font-weight-bold"><span class="badge bg-danger mr-1">{{ join|length }}</span> Group Available</p>
+                    </section>
+                  </div>
+                    <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-3">
+                          <section class="purchase__card_section">
+                                   <a href="#" class="btn btn-primary text-lowercase" data-bs-toggle="modal" data-bs-target="#myForm">
+                                       Create group
+                                    </a>
+                           </section>
+                           <!---START TEST--->
+                                    <div class="modal fade" id="myForm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+                                      <div class="modal-dialog modal-md" >
+                                        <div class="modal-content" >
+                                          <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel" style="padding-left:40%;">Create Group</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                          </div>
+                                           <div class="modal-body" >
+                                              <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+                                                <div class="mdc-card">
+                                                   <section class="mdc-card__supporting-text">
+                                               <!-- form start -->
+                                                                    <form  action="" method="post" name="add" class="mt-5">
+                                                                      <div class="mdc-layout-grid__inner">
+                                                                      <!-- Name area-->
+                                                                        <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12-desktop">
+                                                                          <div class="template-demo">
+                                                                            <div id="demo-tf-box-leading-wrapper">
+                                                                              <div id="tf-box-leading-test" class="mdc-text-field mdc-text-field--box mdc-text-field--with-leading-icon w-100">
+                                                                                <input required pattern=".{2,}" type="text" placeholder="Enter Group Name" name="gname"  class="mdc-text-field__input text-lowercase">
+                                                                                <div class="mdc-text-field__bottom-line"></div>
+                                                                              </div>
+                                                                            </div>
+                                                                          </div>
+                                                                        </div>
+                                                                        <!-- submit action -->
+                                                                         <div class="mdc-layout-grid__cell  mdc-layout-grid__cell--span-7-desktop">
+                                                                              <p class="align-item-center">
+                                                                                       <button type="submit" class="btn btn-primary text-lowercase mb-0">
+                                                                                            create
+                                                                                        </button>
+                                                                                   </p>
+                                                                         </div>
+                                                                            <!-- end submit action -->
+                                                                        </form>
+                                                                        </section>
+                                                                       </div>
+                                                                      </div>
+                                                                     </div>
+                                                                   </div>
+                                                                  </div>
+                                                                 </div>
+                                                                    <!--END TEST-->                                                   </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              <!--end-->
+
+            <!--start table-->
+           <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+
+              <div class="mdc-card table-responsive" style="overflow-x:auto;">
+                <div class="card text-primary font-weight-bold" style="overflow-x:auto;">
+                   <p class="text-red text-center" id="name-validation-msg">
+                             {% for messages in app.flashes('name') %}
+                                    {{ messages}}
+                             {% endfor %}
+                     </p>
+                 <div class="card-body">
+                    <table id="zero_config" class="table table-striped" style="width:100%">
+                      <thead >
+                        <tr >
+                          <th>#</th>
+                          <th class="text-left">Group Name</th>
+                            <th>Created By</th>
+                            <th>Status</th>
+                           <th>Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                     {% if display | length != 0 or verify | length != 0 %}
+
+                       {% for temp,test in verify %}
+                           <tr>
+                              <td>{{ temp +1 }}</td>
+                              <td class="text-left" style="font-weight:bold">{{ test.name }}</td>
+
+                              <td style="font-weight:bold;color:blue;"> {{ test.owner }}</td>
+                              <td style="font-weight:bold;color:green;"> your member</td>
+
+
+                              <td>
+                               <a href="{{ path("content", {  id:test.name,grp:test.id}) }}" class="col btn btn-md btn-success text-lowercase mb-0" data-mdc-auto-init="MDCRipple">View</a>
+                              </td>
+                              </tr>
+                              {% endfor %}
+                       {% for temp,show in display %}
+                            <tr>
+                              <td>{{ temp + verify|length + 1 }}</td>
+                              <td class="text-left" style="font-weight:bold">{{ show.name }}</td>
+                              <td style="font-weight:bold;color:blue;"> {{ show.owner }}</td>
+                               <td style="font-weight:bold;color:red;"> not a member</td>
+
+                              <td>
+                               <a href="{{ path("content", {  id:show.name,grp:show.id}) }}" class="col btn btn-md btn-success text-lowercase mb-0" data-mdc-auto-init="MDCRipple">View</a>
+                              </td>
+                            </tr>
+
+                       {% endfor %}
+
+                       {% endif %}
+                        </tbody>
+                      </table>
+                      </div>
+                 </div>
+              </div>
+            </div>
+            <!--end table -->
+      </main>
+</div>
+<script>
+ $(document).ready(function() {
+    $('#zero_config').DataTable( {
+        responsive: {
+            details: {
+                display: $.fn.dataTable.Responsive.display.modal( {
+                    header: function ( row ) {
+                        var data = row.data();
+                        return 'Details for '+data[0]+' '+data[1];
+                    }
+                } ),
+                renderer: $.fn.dataTable.Responsive.renderer.tableAll( {
+                    tableClass: 'table'
+                } )
+            }
+        }
+    } );
+} );
+
+
+
+ </script>
+
+{% endif %}
+
+{% endblock %}

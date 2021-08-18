@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+         <title>{% block title %}Welcome!{% endblock %}</title>
+        <link href=" {{ asset('assets/bootstrap/css/bootstrap.css') }}" rel="stylesheet">
+		<link href=" {{ asset('assets/css/style.css')}}" rel="stylesheet">
+        <link href=" {{ asset('assets/css/style3.css')}}" rel="stylesheet">
+        <link href="/assets/css/style1.css" rel="stylesheet" type="text/css">
+        <link href="/assets/gitgraph.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="{{ asset('global/global.css')}}">
+        <script src="{{ asset('assets/jquery/jquery.min.js') }}"></script>
+        {# <script src="{{ asset('assets/bootstrap/js/bootstrap.min.js') }}"></script> #}
+        <script src="{{ asset('assets/validate.js') }}"></script>
+         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+          {% block stylesheets %}
+            a {
+                color: hotpink;
+            }
+          {% endblock %}
+    </head>
+
+    <body>
+        {% block body %}
+        
+        {% endblock %}
+        {% block javascripts %}
+            <script type="text/javascript" src="/js1/table.js"></script> 
+            <script type="text/javascript" src="/js1/jquery.js"></script>
+            <script type="text/javascript" src="/js1/raphael.js"></script> 
+            <script type="text/javascript" src="/js1/bootstrap.js"></script> 
+            <script type="text/javascript" src="/js1/codemirror.js"></script>
+            <script type="text/javascript" src="/js1/showdown.js"></script> 
+            <script type="text/javascript" src="/js1/list.min.js"></script>
+            {# <script type="text/javascript" src="/js1/main.js"></script>  #}
+            <script type="text/javascript" src="/js1/networkGraph.js"></script>
+            <script type="text/javascript" src="/js1/gitgraph.js"></script> 
+            <script type="text/javascript" src="/js1/draw.js"></script>  
+
+            <script src="{{ asset('assets/bloodhound.min.js') }}"></script>
+            <script src="{{ asset('assets/typeahead.jquery.min.js') }}" ></script>    
+        {% endblock %}
+    </body>
+</html>

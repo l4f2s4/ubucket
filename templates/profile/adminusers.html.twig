@@ -1,0 +1,175 @@
+{% extends 'userbase.html.twig' %}
+{% block body %}
+{% if app.user %}
+  {% include('profile/usermenu.html.twig') %}
+
+  <div class="page-wrapper mdc-toolbar-fixed-adjust">
+      <main class="content-wrapper">
+      <!-- start -->
+        <div class="mdc-layout-grid">
+          <div class="mdc-layout-grid__inner">
+            <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+              <div class="mdc-card">
+                <div class="mdc-layout-grid__inner">
+                  <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-9">
+                    <section class="purchase__card_section">
+                      <p class="text-red font-weight-bold"><span class="badge bg-danger mr-1">{{ display|length }}</span> Privilege Users</p>
+                    </section>
+                  </div>
+                   <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-3">
+                          <section class="purchase__card_section">
+                                   <a href="#" class="btn btn-primary text-lowercase" data-bs-toggle="modal" data-bs-target="#Form">
+                                       Add
+                                    </a>
+                           </section>
+                           <!---START TEST--->
+                        <div class="modal fade" id="Form" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+                         <div class="modal-dialog modal-md" >
+                           <div class="modal-content" >
+                             <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel" style="padding-left:40%;">Add Privilege User</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                           </div>
+                          <div class="modal-body" >
+                           <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+                                    <div class="mdc-card">
+                                      <section class="mdc-card__supporting-text">
+                                               <!-- form start -->
+                                        <form  action="" method="post" class="mt-5">
+                                             <div class="mdc-layout-grid__inner">
+                                                      <!-- Name area-->
+                                                 <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12-desktop">
+                                                     <div class="template-demo">
+                                                        <div id="demo-tf-box-leading-wrapper">
+                                                           <div id="tf-box-leading-test" class="mdc-text-field mdc-text-field--box mdc-text-field--with-leading-icon w-100">
+                                                               <input required pattern=".{2,}" type="text" placeholder="Enter Full Name" name="fname"  class="mdc-text-field__input text-lowercase">
+                                                            <div class="mdc-text-field__bottom-line"></div>
+                                                         </div>
+                                                     </div>
+                                                   </div>
+                                                 </div>
+                                                         <!-- Name area-->
+                                                 <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12-desktop">
+                                                     <div class="template-demo">
+                                                        <div id="demo-tf-box-leading-wrapper">
+                                                           <div id="tf-box-leading-test" class="mdc-text-field mdc-text-field--box mdc-text-field--with-leading-icon w-100">
+                                                               <input required pattern=".{2,}" type="text" placeholder="Enter Username" name="uname"  class="mdc-text-field__input text-lowercase">
+                                                            <div class="mdc-text-field__bottom-line"></div>
+                                                         </div>
+                                                     </div>
+                                                   </div>
+                                                 </div>
+                                                         <!-- Name area-->
+                                                 <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12-desktop">
+                                                     <div class="template-demo">
+                                                        <div id="demo-tf-box-leading-wrapper">
+                                                           <div id="tf-box-leading-test" class="mdc-text-field mdc-text-field--box mdc-text-field--with-leading-icon w-100">
+                                                               <input required pattern=".{5,@}" type="email" placeholder="Enter email" name="email"  class="mdc-text-field__input text-lowercase">
+                                                            <div class="mdc-text-field__bottom-line"></div>
+                                                         </div>
+                                                     </div>
+                                                   </div>
+                                                 </div>
+                                                  <!-- message action -->
+                                             <div class="mdc-layout-grid__cell  mdc-layout-grid__cell--span-12-desktop">
+                                                  <p class="align-item-center">
+                                                      <i class="material-icons mdc-theme--secondary icon-md">SN</i>
+                                                       <span class="mdc-card__title mdc-card__title--middle text-lowercase text-center">
+                                                       Default password for privilege user is ubucket </span>
+                                                  </p>
+                                             </div>
+                                            <!-- end message action -->
+                                           <!-- submit action -->
+                                              <div class="mdc-layout-grid__cell  mdc-layout-grid__cell--span-7-desktop">
+                                               <p class="align-item-center">
+                                                 <button type="submit" class="btn btn-primary text-lowercase mb-0">
+                                                      Add
+                                                 </button>
+                                               </p>
+                                              </div>
+                                           <!-- end submit action -->
+                                        </form>
+                                      </section>
+                                    </div>
+                           </div>
+                          </div>
+                   </div>
+                </div>
+              </div>
+           <!--END TEST-->
+           </div>
+        </div>
+      </div>
+  </div>
+   <!--end-->
+
+
+            <!--start table-->
+           <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+              <div class="mdc-card table-responsive" style="overflow-x:auto;">
+                <div class="card text-primary font-weight-bold" style="overflow-x:auto;">
+                    <p class="text-red" id="name-validation-msg">
+                             {% for messages in app.flashes('username') %}
+                                    {{ messages}}
+                             {% endfor %}
+                     </p>
+                 <div class="card-body">
+
+                    <table id="zero_config" class="table table-striped" style="width:100%">
+                      <thead >
+                        <tr >
+                          <th>#</th>
+                          <th class="text-left">Name</th>
+                          <th class="text-left">Username</th>
+                          <th class="text-left">Email</th>
+                           <th class="text-center">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                       {% for temp,show in display %}
+                            <tr>
+                              <td>{{ temp +1 }}</td>
+                              <td class="text-left">{{ show.firstname }}</td>
+                              <td class="text-left">{{ show.username }}</td>
+                              <td class="text-left">{{ show.email}}</td>
+                              <td >
+                               <a href="{{ path('removeuser', { 'user' : show.username }) }}" class="col btn btn-md btn-danger text-white text-lowercase mb-0" data-mdc-auto-init="MDCRipple">Remove user</a>
+                               <a href="{{ path('revoke', { 'user' : show.username }) }}" class="col btn btn-md btn-secondary text-white text-lowercase mb-0" data-mdc-auto-init="MDCRipple">Revoke privilege</a>
+                             </td>
+                            </tr>
+                       {% endfor %}
+                        </tbody>
+                      </table>
+                      </div>
+                 </div>
+              </div>
+            </div>
+            <!--end table -->
+      </main>
+</div>
+<script>
+ $(document).ready(function() {
+    $('#zero_config').DataTable( {
+        responsive: {
+            details: {
+                display: $.fn.dataTable.Responsive.display.modal( {
+                    header: function ( row ) {
+                        var data = row.data();
+                        return 'Details for '+data[0]+' '+data[1];
+                    }
+                } ),
+                renderer: $.fn.dataTable.Responsive.renderer.tableAll( {
+                    tableClass: 'table'
+                } )
+            }
+        }
+    } );
+} );
+
+
+
+ </script>
+
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,156 @@
+{% extends "userbase.html.twig" %}
+
+{% block title %}Repositories{% endblock %}
+
+{% block body %}
+    {{ include("includes/usermenu.html.twig") }}
+    {% if app.user != null %}
+<div class="page-wrapper mdc-toolbar-fixed-adjust">
+  <main class="content-wrapper" style="background:transparent;">
+    <div class="mdc-layout-grid">
+          <div class="mdc-layout-grid__inner">
+            <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+              <div class="mdc-card">
+                <div class="mdc-layout-grid__inner">
+                  <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-9">
+                    <section class="purchase__card_section">
+                      <p>
+                      <span class="text-red font-weight-bold">Your repositories &nbsp;<span class="badge bg-primary" > {{ app.user.repos.count }}</span></span>
+                      </p>
+                    </section>
+                  </div>
+                    <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-3">
+                          <section class="purchase__card_section">
+                                   <a href="#" class="btn btn-primary text-lowercase" data-bs-toggle="modal" data-bs-target="#myForm">
+                                       Create repository
+                                    </a>
+                           </section>
+                           <!---START TEST--->
+                                    <div class="modal fade" id="myForm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+                                      <div class="modal-dialog modal-md" >
+                                        <div class="modal-content" >
+                                          <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel" style="padding-left:40%;">Create Repository</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                          </div>
+                                           <div class="modal-body" >
+                                              <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+                                                <div class="mdc-card">
+                                                 {{ form_start(repo_form) }}
+                                                   <section class="mdc-card__supporting-text">
+                                                   <!-- Name area-->
+                                                    <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12-desktop">
+                                                        <div class="template-demo">
+                                                           <div id="demo-tf-box-leading-wrapper">
+                                                            <div id="tf-box-leading-test" >
+                                                                 {{ form_row(repo_form.name) }}
+
+                                                           </div>
+                                                          </div>
+                                                        </div>
+                                                    </div>
+                                                     <!-- description area-->
+                                                    <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12-desktop">
+                                                        <div class="template-demo">
+                                                           <div id="demo-tf-box-leading-wrapper">
+                                                                 {{ form_row(repo_form.description) }}
+                                                           </div>
+                                                        </div>
+                                                    </div>
+                                                     <!-- visibility area-->
+                                                    <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12-desktop">
+                                                        <div class="template-demo">
+                                                           <div id="demo-tf-box-leading-wrapper">
+
+                                                                 {{ form_row(repo_form.visibility) }}
+
+                                                           </div>
+                                                        </div>
+                                                    </div>
+
+                                                        <button type="submit" class="btn btn-success">Create repository</button>
+                                                        {{ form_end(repo_form) }}
+                                                   </section>
+                                                 </div>
+                                              </div>
+                                           </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <!--END TEST-->
+                           </div>
+                          </div>
+                </div>
+              </div>
+          </div>
+    <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+    {% if user.repos|length != 0  %}
+         <div class="mdc-layout-grid">
+          <div class="mdc-layout-grid__inner">
+            <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+              <div class="mdc-card">
+                <div class="mdc-layout-grid__inner">
+                {% for repo in appointments %}
+
+                  <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-4">
+                    <section class="purchase__card_section">
+                      <a href={{ path("repo", { user: user.username, repo: repo.name }) }} style="color:#FF0000;" class="btn text-lowercase">{{repo.name}}</a>
+                        <p>
+                       <span> {{repo.description}} &nbsp;</span>
+                        {% if repo.visibility == 0 %}
+                        <a href={{ path("private", { Id: repo.id})}} class="btn  btn-sm private" style="background:rgba(57, 7, 150, 0.90); color:white;float:right;">Make private</a>
+                                    {% endif %}
+                                    {% if repo.visibility == 1 %}
+                         <a href={{ path("public_repo", { Id: repo.id}) }} class="btn  btn-sm public" style="background:rgba(57, 7, 150, 0.90); color:white;float:right;">Make public</a>
+                                    {% endif %}
+                        </p>
+                            <br/>
+                             <span>
+                             <i class="mdi mdi-24px mdi-circle-medium" style="font-size: 0.5rem; color:green;"></i> Last commit {{ "now"|date("Y M d") }}
+                             </span>
+                             <hr/>
+                        <br/>
+                    </section>
+                  </div>
+         {% endfor %}
+          </div>
+           <div class="navigation pl-4">
+            {{ knp_pagination_render(appointments) }}
+        </div>
+      </div>
+    </div>
+    {% else %}
+        <div class="mdc-layout-grid">
+          <div class="mdc-layout-grid__inner">
+            <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+              <div class="mdc-card">
+                <div class="mdc-layout-grid__inner">
+                  <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+                    <section class="purchase__card_section">
+                      <p>
+                      <span class="mb-3  font-weight-bold" > Currently, you have no available repositories.</span>
+                      </p>
+                    </section>
+                  </div>
+                </div>
+              </div>
+            </div>
+    {% endif %}
+   </div>
+  </main>
+ </div>
+
+ <script type="text/javascript">
+  $(document).ready(function() {
+     $('#repo_form_name').on('change', function (){
+       var value = document.getElementById('repo_form_name').innerHTML;
+       repo_form_name.innerHTML = value.replace(/\s+/g, '-').toLowerCase();
+        str = value.replace(/\s/g, '-').toLowerCase();
+        console.log(str);
+   });
+   });
+
+ </script>
+    {% endif %}
+
+{% endblock %}

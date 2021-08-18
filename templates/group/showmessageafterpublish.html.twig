@@ -1,0 +1,62 @@
+{% extends "userbase.html.twig" %}
+{% block body %}
+{% if app.user %}
+   {% if app.user.title == 'administrator' or app.user.title == 'superadmin' %}
+      {{ include("profile/usermenu.html.twig") }}
+   {% else %}
+    {{ include("includes/usermenu.html.twig") }}
+   {% endif%}
+  <div class="page-wrapper mdc-toolbar-fixed-adjust">
+      <main class="content-wrapper">
+      <!-- start -->
+        <div class="mdc-layout-grid">
+          <div class="mdc-layout-grid__inner">
+            <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+              <div class="mdc-card">
+                <div class="mdc-layout-grid__inner">
+                  <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-9">
+                    <section class="purchase__card_section">
+                      <p class="font-weight-bold" style="color:black;"> <span class="text-red text-uppercase">{{ group }}</span> Group: Repo <span class="text-red text-uppercase">{{ name }}</span> </p>
+                       <p> <span class="badge bg-danger" style="border-radius:50%;">{{group4.users.count}}</span>
+                       <a href="{{ path("content", {  id:group,grp:grp}) }}" class="btn">
+                              <span class="font-weight-bold">     Member </span>
+                        </a>
+                       &nbsp;
+                       <a href="/pathcontent/{{ group }}/{{grp}}/grprepos" class="btn btn-success">
+                                     <span class="badge bg-primary" style="border-radius:50%;">{{group4.repos.count}}</span>
+
+                                       Repositories
+                        </a>
+
+                       </p>
+                    </section>
+                  </div>
+                       <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-3">
+                    <section class="purchase__card_section">
+                      <p >
+                        <a href="{{ path("video", {  id:group,grp:grp}) }}" class="btn btn-primary text-lowercase" >
+                                 Code Video room
+                         </a>
+                      </p>
+                    </section>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--end-->
+    <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+      <div class="mdc-card">
+          <div class="mdc-layout-grid__inner">
+            <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+            <section class="purchase__card_section">
+               <p class="text-center font-weight-bold text-info" >Info!</p>
+               <p class="text-center font-weight-bold  text-red">Repository has been published and visibility has been set to public.</p>
+               <p class="font-weight-bold text-red">To access it search to user <i class="text-green">{{ repost.userId.Username}} </i> public repository</p>
+            </section>
+          </div>
+       </div>
+    </div>
+  </main>
+ </div>
+ {% endif %}
+{% endblock%}

@@ -1,0 +1,72 @@
+{{ include("includes/unavbar.html.twig") }}
+{{ include("includes/profile.html.twig") }}
+
+            <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-9">
+              <div class="mdc-card">
+                <div class="mdc-layout-grid__inner">
+                  <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+                    <section class="purchase__card_section">
+                      <a  class="active btn font-weight-bold" href="{{ path("repos_public", {id:user.username}) }}" >  Overview <span class="badge badge-light"></span></a>
+                    </section>
+                    <section class="purchase__card_section">
+                     <a href="{{ path("reposhow_public", {id:user.username }) }}" class="btn font-weight-bold"><i class="mdi mdi-24px mdi-source-repository-multiple" style="color:green;"></i>&nbsp; Repositories <span class="badge bg-primary">{{ appointments.count}}</span></a>
+                    </section>
+                     <section class="mdc-toolbar__section mdc-toolbar__section--align-end">
+                        <span class="mdc-toolbar__input ">
+                            <div class="mdc-text-field">
+                              <input type="text" id="part" class="form-control" id="css-only-text-field-box" placeholder="find a repository">
+                            </div>
+                       </span>
+                    </section>
+                  </div>
+
+
+
+<script type="text/javascript">
+
+   $(document).ready(function()
+			{
+				var analyze = new Bloodhound(
+					{
+						datumTokenizer: Bloodhound.tokenizers.whitespace,
+                        queryTokenizer: Bloodhound.tokenizers.whitespace,
+
+						remote: {
+							url: "{{ path('public_search',{name: user.username}) }}/%QUERY%",
+                            wildcard: '%QUERY%',
+							filter: function(analyze)
+							{
+								return $.map(analyze, function(rep)
+								{
+									return {
+										rep_name: rep.name,
+										rep_disc: rep.description,
+										rep_id: rep.id,
+
+									}
+								})
+							}
+						}
+					})
+					analyze.initialize();
+	                $('#part').typeahead(
+						{
+							hint: true
+						},
+						{
+							name: 'analyze',
+							source: analyze.ttAdapter(),
+							display: 'rep_name',
+							templates: {
+								suggestion: function (data)
+								{
+									return '<div class="suggest" style="background-color:#00a;"> <a href ="{{ path('repos_public') }}/'+data.rep_name+'" class="btn"> <strong class="text-white">'+data.rep_name +'</strong> <span class="text-white"><i>'+ data.rep_disc+'</i></span> </a> </div>'
+								},
+								footer: function (query)
+								{
+									return '<div id="neno" class="text-center"> Results for: '+ query.query +' </div>'
+								}
+							}
+						})
+			})
+    </script>

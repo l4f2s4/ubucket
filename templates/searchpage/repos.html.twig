@@ -1,0 +1,59 @@
+{% extends "userbase.html.twig" %}
+{% block title %}Overview{% endblock %}
+{% block body %}
+    {{ include("searchpage/public.html.twig") }}
+  <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+      <div class="mdc-card">
+        <div class="mdc-layout-grid__inner">
+       {% if appointments|length != 0 %}
+         {% for repo in appointments  %}
+           {% if repo.visibility == 0 %}
+              <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-3">
+                    <section class="purchase__card_section">
+                      <a href="{{ path("repo", { user: user.username, repo: repo.name }) }}" class="btn" style="font-weight:bold;color:#FF0000;">{{repo.name}}</a>
+                        <br/>
+                        <br/>
+
+                            <p>{{repo.description}}</p>
+
+                        <br/>
+                        <span>
+                            <i class="mdi mdi-8px mdi-circle" style="font-size: 0.5rem;color:green;"></i> Last commit on {{ "now"|date("Y M d") }}
+                        </span>
+
+
+                    </section>
+                  </div>
+            {% endif %}
+         {% endfor %}
+            <div class="navigation pl-4 mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+             {{ knp_pagination_render(appointments) }}
+           </div>
+          <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+                    <section class="purchase__card_section">
+                     <p style="font-weight:bold;color:black;">UBUCKET! we are here to help you,feel free to join our community by <u style="color:red;">sign up?</u></p>
+                    </section>
+          </div>
+    {% else %}
+
+                  <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+                    <section class="purchase__card_section">
+                      <p>
+                      <span class="mb-3  text-red font-weight-bold" > Currently, this user has no available public repositories.</span>
+                      </p>
+                    </section>
+                  </div>
+                   <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+                    <section class="purchase__card_section">
+                     <p style="font-weight:bold;color:black;">UBUCKET! we are here to help you,feel free to join our community by <u style="color:red;">sign up?</u></p>
+                    </section>
+                  </div>
+
+    {% endif %}
+
+   </div>
+   </div>
+   </div>
+ </div>
+
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "userbase.html.twig" %}
+
+
+{% block body %}
+	{{ include('includes/unavbar.html.twig') }}
+ <div style="margin-left:400px; width:600px; margin-top:30px">
+    <div class="panel panel-default">
+	<div class="panel-heading" style="background:rgba(57, 7, 150, 0.90); color:white;">
+  <h4 >  <i class="glyphicon glyphicon-user"></i> {{username}} </h4> 
+	</div>
+	{% if repo %}
+	<div class="panel-body">
+    
+     {% if user.repos|length != 0 %}
+	   
+        {% for repo in user.repos %}
+		  {% if repo.visibility == 0 %}
+		<div class="well" style="height:auto;">
+           Repository Name:  <strong><a style="color:blue;" href="{{ path("repository", {id:username,user: user.username, repo: repo.name }) }}" target="_blank">{{repo.name}}</a></strong>		     
+           <br/>
+			   <p>Description: {{ repo.description }}</p>
+		   </div>  
+			{% endif %}
+	{% endfor %}
+	 {% endif %}
+ </div>
+ <div class="panel-footer" style="background:rgba(57, 7, 150, 0.90); color:white;">
+ <p>UDOM BUCKET! we are here to help you,feel free to join our community by <u style="color:magenta;">sign up?</u></p>
+ </div>
+</div>
+{% else %}
+    <div class="col-sm-8 col-md-7 col-8 col-lg-7 mx-auto">
+    <div class="card mt-4">
+       <div class="card-body">
+            <div class="well" style="height:auto;color:red;font-weight:family;">
+               <p>No public repository found for this user</p>
+             </div>
+       </div>
+       <div class="card-footer"  >
+          <p style="font-weight:bold;color:purple;">UBUCKET! we are here to help you,feel free to join our community by <u style="color:blue;">sign up?</u></p>
+       </div>
+    </div>
+  </div>
+  </div>
+</div>
+{% endif %}
+
+{% endblock %}

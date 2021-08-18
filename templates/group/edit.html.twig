@@ -1,0 +1,49 @@
+{% extends "userbase.html.twig" %}
+
+{% block title %}Udom Bucket{% endblock %}
+
+{% block body %}
+	{{ include('includes/usermenu.html.twig') }}
+<div class="page-wrapper mdc-toolbar-fixed-adjust">
+  <main class="content-wrapper" style="background:transparent;">
+    <div class="mdc-layout-grid">
+          <div class="mdc-layout-grid__inner">
+            <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+              <div class="mdc-card">
+                <div class="mdc-layout-grid__inner">
+                  <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-9">
+                    <section class="purchase__card_section">
+                      <p>
+                      <span class="text-red font-weight-bold">Edit</span>
+                      </p>
+                    </section>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+	
+	  <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+                                                <div class="mdc-card">
+                                                 {{ form_start(form) }}
+                                                   <section class="mdc-card__supporting-text">
+                                                   <!-- Name area-->
+                                                    <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-6-desktop">
+                                                        <div class="template-demo">
+                                                           <div id="demo-tf-box-leading-wrapper">
+                                                            <div id="tf-box-leading-test" >
+                                                                 {{ form_row(form.name) }}
+                                                           </div>
+                                                          </div>
+                                                        </div>
+                                                    </div>
+                                                    <br/>
+                                                        {{ form_end(form) }}
+                                                   </section>
+                                                 </div>
+      </div>
+    </main>
+  </div>
+
+
+{% endblock %}

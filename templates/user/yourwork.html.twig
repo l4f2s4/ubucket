@@ -1,0 +1,92 @@
+ {% extends "userbase.html.twig" %}
+
+{% block title %}Your work overview {% endblock %}
+
+{% block body %}
+    {{ include("includes/usermenu.html.twig") }}
+    {% if app.user != null %}
+<div class="page-wrapper mdc-toolbar-fixed-adjust">
+  <main class="content-wrapper" style="background:transparent;">
+    <div class="mdc-layout-grid">
+          <div class="mdc-layout-grid__inner">
+            <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+              <div class="mdc-card">
+                <div class="mdc-layout-grid__inner">
+                  <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-8">
+                    <section class="purchase__card_section">
+                      <p>Welcome
+                      <span class="text-red text-uppercase font-weight-bold">{{ app.user.username }}</span>
+                      </p>
+                    </section>
+                  </div>
+                  <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-4">
+                    <section class="purchase__card_section">
+                      <p>
+                      <span class="text-red font-weight-bold">Your work overview</span>
+                      </p>
+                    </section>
+                  </div>
+                </div>
+              </div>
+          </div>
+  <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+       <div class="mdc-layout-grid">
+          <div class="mdc-layout-grid__inner">
+    {% if user.repos|length != 0 %}
+
+         {% for repo in user.repos | slice(0,6) %}
+                  <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-4">
+                    <section class="purchase__card_section">
+                      <a href={{ path("repo", { user: user.username, repo: repo.name }) }} class="btn" style="font-weight:normal;color:#FF0000;">{{repo.name}}</a>
+                         <span style="float:right;">
+                            {% if repo.visibility == 1 %}
+                                <i class="mdi mdi-24px mdi-lock" style="color:#00a;"></i> &nbsp;
+                            {% else %}
+                                <i class="mdi mdi-24px mdi-lock-open" style="color:#00a;"></i> &nbsp;
+                            {% endif %}
+                        </span>
+                        <br/>
+                        <br/>
+
+                            <p>{{repo.description}}</p>
+
+                        <br/>
+                        <span>
+                            <i class="mdi mdi-24px mdi-circle-medium" style="color: green;"></i> Last commit on {{ "now"|date("Y M d") }}
+                        </span>
+
+
+
+                        <hr/>
+                    </section>
+
+                  </div>
+         {% endfor %}
+      </div>
+     </div>
+   </div>
+    {% else %}
+            <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+              <div class="mdc-card">
+                <div class="mdc-layout-grid__inner">
+                  <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+                    <section class="purchase__card_section">
+                      <p>
+                      <span class="mb-3  font-weight-bold" > Currently,no available repositories.</span>
+                      </p>
+                    </section>
+                  </div>
+                </div>
+              </div>
+            </div>
+    {% endif %}
+   </div>
+  </main>
+ </div>
+    {% endif %}
+
+{% endblock %}
+
+
+
+

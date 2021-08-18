@@ -1,0 +1,73 @@
+    <div class="body-wrapper">
+   <header class="mdc-toolbar mdc-elevation--z4 mdc-toolbar--fixed" style="background:white;">
+      <div class="mdc-toolbar__row">
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+          <h5 class="pl-4 font-weight-bold text-blue"><i class="mdi  mdi-24px mdi-bucket mr-1" style="color:#00a;"></i>UBUCKET</h5>
+        </section>
+          <section class="mdc-toolbar__section mdc-toolbar__section--align-center">
+            <span class="mdc-toolbar__input ">
+            <div class="mdc-text-field">
+              <input type="text" id="myinput" class="form-control" id="css-only-text-field-box" placeholder="Search...">
+            </div>
+          </span>
+        </section>
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-end" role="toolbar">
+          <div class="mdc-menu-anchor mr-1">
+            <a href="{{ path('registration')}}" class="btn btn-primary text-white"  data-mdc-auto-init="MDCRipple">
+             <i class="mdi mdi-24px mdi-logout"></i>&nbsp;Signup?
+            </a>
+          </div>
+        </section>
+      </div>
+    </header>
+    <!-- partial -->
+ </div>
+     <script type="text/javascript">
+   
+   $(document).ready(function()
+			{
+				var repo = new Bloodhound(
+					{
+						datumTokenizer: Bloodhound.tokenizers.whitespace,
+                                    queryTokenizer: Bloodhound.tokenizers.whitespace,
+
+						remote: {
+							url: "{{ path('search') }}/%QUERY%",
+                            wildcard: '%QUERY%',
+							filter: function(repo)
+							{
+								return $.map(repo, function(rep)
+								{
+									return {
+										rep_name: rep.username,
+										//rep_disc: rep.description,
+										rep_id: rep.id,
+										//user: rep.userId
+									}
+								})
+							}
+						}
+					})
+					repo.initialize();
+	                $('#myinput').typeahead(
+						{
+							hint: true
+						},
+						{
+							name: 'repo',
+							source: repo.ttAdapter(),
+							display: 'rep_name',
+							templates: {
+								suggestion: function (data)
+								{
+									return '<div class="suggests"> <a href ="{{ path('repos_public') }}/'+data.rep_name+'" class="btn"> <strong class="text-red text-center">'+data.rep_name +'</strong>  </a> </div>'
+								},
+								footer: function (query)
+								{
+									return '<div class="text-center" id="neno"> Results for: '+ query.query +' </div>'
+								}
+							}
+						})		
+			})
+    </script>
+ 

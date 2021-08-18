@@ -1,0 +1,123 @@
+{% extends "userbase.html.twig" %}
+
+{% block title %}Group{% endblock %}
+
+{% block body %}
+    {{ include("includes/usermenu.html.twig") }}
+    {% if app.user != null %}
+<div class="page-wrapper mdc-toolbar-fixed-adjust">
+  <main class="content-wrapper" style="background:transparent;">
+    <div class="mdc-layout-grid">
+          <div class="mdc-layout-grid__inner">
+            <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+              <div class="mdc-card">
+                <div class="mdc-layout-grid__inner">
+                   <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-9">
+                    <section class="purchase__card_section">
+                      <p class="text-red font-weight-bold"><span class="badge bg-danger mr-1">{{ user.groupTs|length }}</span> Group Available</p>
+                    </section>
+                  </div>
+                    <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-3">
+                          <section class="purchase__card_section">
+                                   <a href="#" class="btn btn-primary text-lowercase" data-bs-toggle="modal" data-bs-target="#myForm">
+                                       Create group
+                                    </a>
+                           </section>
+                           <!---START TEST--->
+                                    <div class="modal fade" id="myForm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+                                      <div class="modal-dialog modal-md" >
+                                        <div class="modal-content" >
+                                          <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel" style="padding-left:40%;">Create Group</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                          </div>
+                                           <div class="modal-body" >
+                                              <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+                                                <div class="mdc-card">
+                                                   <section class="mdc-card__supporting-text">
+                                               <!-- form start -->
+                                                                    <form  action="{{ path('create')}}" method="post" name="add" class="mt-5">
+                                                                      <div class="mdc-layout-grid__inner">
+                                                                      <!-- Name area-->
+                                                                        <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12-desktop">
+                                                                          <div class="template-demo">
+                                                                            <div id="demo-tf-box-leading-wrapper">
+                                                                              <div id="tf-box-leading-test" class="mdc-text-field mdc-text-field--box mdc-text-field--with-leading-icon w-100">
+                                                                                <input required pattern=".{2,}" type="text" placeholder="Enter Group Name" name="gname"  class="mdc-text-field__input text-lowercase">
+                                                                                <div class="mdc-text-field__bottom-line"></div>
+                                                                              </div>
+                                                                            </div>
+                                                                          </div>
+                                                                        </div>
+                                                                        <!-- submit action -->
+                                                                         <div class="mdc-layout-grid__cell  mdc-layout-grid__cell--span-7-desktop">
+                                                                              <p class="align-item-center">
+                                                                                       <button type="submit" class="btn btn-primary text-lowercase mb-0">
+                                                                                            create
+                                                                                        </button>
+                                                                                   </p>
+                                                                         </div>
+                                                                            <!-- end submit action -->
+                                                                        </form>
+                                                                        </section>
+                                                                       </div>
+                                                                      </div>
+                                                                     </div>
+                                                                   </div>
+                                                                  </div>
+                                                                 </div>
+                                                                    <!--END TEST-->                                                   </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              <!--end-->
+    <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+    {% if user.groupTs|length != 0  %}
+         <div class="mdc-layout-grid">
+          <div class="mdc-layout-grid__inner">
+            <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+              <div class="mdc-card">
+                <div class="mdc-layout-grid__inner">
+                {% for show in group %}
+
+                  <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-4">
+                    <section class="purchase__card_section">
+                     <i class="mdi mdi-24px mdi-group" style="color:green;"></i>  <a href="{{ path("content", {  id:show.name,grp:show.id}) }}" class="btn" style="font-weight:normal;color:#FF0000;">{{show.name}}</a>
+                        &nbsp;&nbsp;
+                    {% if app.user.username == app.user.groupTs.owner %}
+                      <a href="{{ path("edit", {  id:show.id}) }}" class="col btn btn-md text-white text-lowercase mb-0" style="background:rgba(57, 7, 150, 0.90); color:white;float:right;" >Edit</a>
+                    {% endif %}
+                             <hr/>
+                        <br/>
+                    </section>
+                  </div>
+         {% endfor %}
+          </div>
+      </div>
+    </div>
+       <div class="navigation pl-4">
+            {{ knp_pagination_render(group) }}
+        </div>
+    {% else %}
+        <div class="mdc-layout-grid">
+          <div class="mdc-layout-grid__inner">
+            <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+              <div class="mdc-card">
+                <div class="mdc-layout-grid__inner">
+                  <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+                    <section class="purchase__card_section">
+                      <p>
+                      <span class="mb-3  font-weight-bold" > Currently, no available group.</span>
+                      </p>
+                    </section>
+                  </div>
+                </div>
+              </div>
+            </div>
+    {% endif %}
+   </div>
+  </main>
+ </div>
+    {% endif %}
+
+{% endblock %}

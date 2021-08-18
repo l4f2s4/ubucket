@@ -1,0 +1,160 @@
+{% extends "userbase.html.twig" %}
+{% block body %}
+   {% if app.user.title == 'administrator' or app.user.title == 'superadmin' %}
+      {{ include("profile/usermenu.html.twig") }}
+   {% else %}
+    {{ include("includes/usermenu.html.twig") }}
+   {% endif%}
+  <div class="page-wrapper mdc-toolbar-fixed-adjust">
+      <main class="content-wrapper">
+      <!-- start -->
+        <div class="mdc-layout-grid">
+          <div class="mdc-layout-grid__inner">
+            <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+              <div class="mdc-card">
+                <div class="mdc-layout-grid__inner">
+                  <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-9">
+                    <section class="purchase__card_section">
+                      <p class="font-weight-bold" style="color:black;"> <span class="text-red text-uppercase">{{ group }}</span> Group </p>
+                       <p> <span class="badge bg-danger" style="border-radius:50%;">{{group4.users.count}}</span>
+                        <a href="{{ path("content", {  id:group,grp:grp}) }}" class="btn">
+                              <span class="font-weight-bold">     Member </span>
+                        </a>
+                       &nbsp;
+                       <a href="#" class="btn btn-success text-lowercase" data-bs-toggle="modal" data-bs-target="#myForm">
+                                     <span class="badge bg-primary" style="border-radius:50%;">{{group4.repos.count}}</span>
+                                        Create new repository
+                        </a>
+                           <!---START TEST--->
+                                    <div class="modal fade" id="myForm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+                                      <div class="modal-dialog modal-md" >
+                                        <div class="modal-content" >
+                                          <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel" style="padding-left:40%;">Create Repository</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                          </div>
+                                           <div class="modal-body" >
+                                              <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+                                                <div class="mdc-card">
+                                                 {{ form_start(repo_form) }}
+                                                   <section class="mdc-card__supporting-text">
+                                                   <!-- Name area-->
+                                                    <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12-desktop">
+                                                        <div class="template-demo">
+                                                           <div id="demo-tf-box-leading-wrapper">
+                                                            <div id="tf-box-leading-test" >
+                                                                 {{ form_row(repo_form.name) }}
+                                                           </div>
+                                                          </div>
+                                                        </div>
+                                                    </div>
+                                                     <!-- description area-->
+                                                    <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12-desktop">
+                                                        <div class="template-demo">
+                                                           <div id="demo-tf-box-leading-wrapper">
+                                                                 {{ form_row(repo_form.description) }}
+                                                           </div>
+                                                        </div>
+                                                    </div>
+                                                     <!-- visibility area-->
+                                                    <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12-desktop">
+                                                        <div class="template-demo">
+                                                           <div id="demo-tf-box-leading-wrapper">
+
+                                                                 {{ form_row(repo_form.visibility) }}
+
+                                                           </div>
+                                                        </div>
+                                                    </div>
+
+                                                        <button type="submit" class="btn btn-success">Create repository</button>
+                                                        {{ form_end(repo_form) }}
+                                                   </section>
+                                                 </div>
+                                              </div>
+                                           </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <!--END TEST-->
+                       </p>
+                    </section>
+
+                  </div>
+                 <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-3">
+                    <section class="purchase__card_section">
+                      <p >
+                        <a href="{{ path("video", {  id:group,grp:grp}) }}"  class="btn btn-primary text-lowercase" >
+                                 Code Video room
+                         </a>
+                      </p>
+                    </section>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--end-->
+  <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+      {% if group4.repos|length != 0 %}
+       <div class="mdc-layout-grid">
+          <div class="mdc-layout-grid__inner">
+            <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+              <div class="mdc-card">
+                <div class="mdc-layout-grid__inner">
+                {% for repo in group4.repos %}
+
+                  <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-4">
+                    <section class="purchase__card_section">
+                      <a href="{{ path("repogt", {  id:group4.name,grp:group4.id,group4: group4.name, reponame: repo.id }) }}" style="color:#FF0000;" class="btn font-weight-bold text-lowercase">{{repo.name}}</a>
+                        <p class="font-weight-family">
+                       <span> {{repo.description}}</span>
+                       </p>
+                       <p class="badge bg-success text-white font-weight-bold">
+                        {% if repo.visibility == 0 %}
+                          public
+                          {% endif %}
+                          {% if repo.visibility == 1 %}
+                           private
+                          {% endif %}
+                           </p>
+                            <br/>
+                             <span>
+                             <i class="mdi mdi-8px mdi-circle text-success" style="font-size: 0.5rem; color:green;"></i> Last commit {{ "now"|date("c") }}
+                             </span>
+                             <br/>
+                             <br/>
+                       {% if test==user %}
+                        <a href="/Repo/{{group}}/{{ repo.id }}/{{grp}}/publish" class="btn  btn-sm publish" style="background:rgba(57, 7, 150, 0.90); color:white;" >Publish</a>
+                       {% endif %}
+                             <hr/>
+                        <br/>
+                    </section>
+                  </div>
+         {% endfor %}
+          </div>
+          {# <div class="navigation pl-4">
+            {{ knp_pagination_render(appointments) }}
+        </div>#}
+      </div>
+    </div>
+    {% else %}
+        <div class="mdc-layout-grid">
+          <div class="mdc-layout-grid__inner">
+            <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+              <div class="mdc-card">
+                <div class="mdc-layout-grid__inner">
+                  <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+                    <section class="purchase__card_section">
+                      <p>
+                      <span class="mb-3  font-weight-bold" > Currently,no available repositories.</span>
+                      </p>
+                    </section>
+                  </div>
+                </div>
+              </div>
+            </div>
+    {% endif %}
+
+    </div>        
+   </div>
+{% endblock%}

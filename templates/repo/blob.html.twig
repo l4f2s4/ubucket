@@ -1,0 +1,56 @@
+{% extends "userbase.html.twig" %}
+
+{% block title %}Repo {{ repo.name }}{% endblock %}
+
+{% block body %}
+ {% if app.user != null %}
+   {% if app.user.title == 'administrator' or app.user.title == 'superadmin' %}
+      {{ include("profile/usermenu.html.twig") }}
+   {% else %}
+    {{ include("includes/usermenu.html.twig") }}
+   {% endif%}
+{% endif %}
+{% if app.user == null %}
+    {{ include("includes/unavbar.html.twig") }}
+    {{ include("includes/profile.html.twig") }}
+{% endif %}
+
+    {% include "repo/fragments/header.html.twig" %}
+
+    <div class="row">
+        <div class="col-xs-12" style="background-color:lightgrey;">
+
+            {% if git.existsInTree(tree.sha, file) %}
+            <h2>{{ path | join("/") }}</h2>
+            <div class="well" >
+                <pre><code class="php">
+
+                   {{ git.contentFromTree(tree.sha, file).contents  }}
+
+                </code></pre>
+            </div>
+            {% else %}
+                <div class="well">
+                    {{ dump() }}
+                </div>
+            {% endif %}
+
+        </div>
+   </div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    <link rel="stylesheet" href="/components/highlightjs/styles/default.css">
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+
+    <script type="text/javascript" src="/components/highlightjs/highlight.pack.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    {% include "repo/fragments/header_js.html.twig" %}
+{% endblock %}

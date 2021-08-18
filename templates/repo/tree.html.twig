@@ -1,0 +1,101 @@
+{% extends "userbase.html.twig" %}
+{% block title %}Repo-{{ repo.name }}{% endblock %}
+{% block body %}
+{% if app.user == null %}
+    {{ include("includes/unavbar.html.twig") }}
+    {{ include("includes/profile.html.twig") }}
+{% endif %}
+{% if app.user != null %}
+   {% if app.user.title == 'administrator' or app.user.title == 'superadmin' %}
+      {{ include("profile/usermenu.html.twig") }}
+   {% else %}
+    {{ include("includes/usermenu.html.twig") }}
+   {% endif%}
+{% endif %}
+    {% include "repo/fragments/header.html.twig" %}
+
+
+<div class="row">
+   <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-8">
+
+    <table class="table table-bordered table-striped table-hover table-condensed">
+        <tr><th>Path</th><th>Log</th><th>Sha1</th><th>Date</th></tr>
+
+        {# Display .. when we are inside a subdirectory #}
+        {% if crumbtrail|length > 1 %}
+        <tr>
+            <th colspan="4">
+                <i class="mdi mdi-8px mdi-folder"></i> <a href="{{ crumbtrail[(crumbtrail|length)-1].href }}" class="btn font-weight-bold">..</a>
+            </th>
+        </tr>
+        {% endif %}
+
+    {% for item in git.treeInfo(commit, path) %}
+         <tr>
+             <td>
+                {% set p = "/" ~ path %}
+                {% if item.item.isDir %}
+                    {% if p == "/" %}
+                        {% set p = p ~ item.name %}
+                    {% else %}
+                        {% set p = p ~ "/" ~ item.name %}
+                    {% endif %}
+                    <i class="mdi mdi-24px mdi-folder" style="color:#82CAFA"></i> <a href="{{ path('repo_tree', { user: repo.userId.username, repo:repo.name, tree: branch, path: p }) }}" target="_blank">{{ item.name }}</a>
+                {% else %}
+                    <i class="mdi mdi-24px mdi-file"></i> <a href="{{ path('repo_blob_view', { user: repo.userId.username, repo:repo.name, tree: branch, path: p ~ "/" ~ item.name }) }}" class="btn text-red" style="color:red;">{{ item.name }}</a>
+                {% endif %}
+             </td>
+             <td>{{ item.commit_log }}</td>
+             <td><a href="#">{{ item.sha | slice(0, 8)}}</a></td>
+             <td><time class="timeago" datetime="{{ item.commit_date|date("c") }}">{{ item.commit_date|date("c") }} {{ item.commit_date|date("Y M d H:i:s") }}</time></td>
+         </tr>
+    {% endfor %}
+    </table>
+    </div>
+ </div>
+ <div class="row">
+   <div class="mdc-layout-grid">
+          <div class="mdc-layout-grid__inner">
+            <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+              <div class="mdc-card">
+                <div class="mdc-layout-grid__inner">
+
+                  <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+                    <section class="purchase__card_section">
+                        {% if git.existsInTree(tree.sha, 'readme.md')  %}
+                        <h2>ReadMe</h2>
+                        <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12" ></div>
+                        <div class="well">
+                            {{ git.contentFromTree(tree.sha, 'readme.md').contents | markdown }}
+                        </div>
+                        {% elseif git.existsInTree(tree.sha,'README.md') %}
+                        <h2>ReadMe</h2>
+                        <div class="well">
+                            {{ git.contentFromTree(tree.sha, 'README.md').contents | markdown }}
+                        </div>
+                        {% elseif git.existsInTree(tree.sha,'ReadMe.md') %}
+                        <h2>ReadMe</h2>
+                        <div class="well">
+                            {{ git.contentFromTree(tree.sha, 'ReadME.md').contents | markdown }}
+                        </div>
+                        {% else %}
+
+                        {% endif %}
+                    </section>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+        </div>
+    </div>
+    </div>
+ </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% include "repo/fragments/header_js.html.twig" %}
+{% endblock %}

@@ -1,0 +1,173 @@
+
+{% extends "userbase.html.twig" %}
+
+{% block title %}Repo {{ repo.name }}{% endblock %}
+
+{% block body %}
+   {% if app.user != null %}
+   {% if app.user.title == 'administrator' or app.user.title == 'superadmin' %}
+      {{ include("profile/usermenu.html.twig") }}
+   {% else %}
+    {{ include("includes/usermenu.html.twig") }}
+   {% endif%}
+<div class="page-wrapper mdc-toolbar-fixed-adjust">
+  <main class="content-wrapper" style="background:transparent;">
+    <div class="mdc-layout-grid">
+          <div class="mdc-layout-grid__inner">
+            <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+              <div class="mdc-card">
+                <div class="mdc-layout-grid__inner">
+                  <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-8">
+                    <section class="purchase__card_section">
+                      <p>
+                      <span class="text-red text-uppercase font-weight-bold">Repo: <span class="text-red">{{ repo.name }}</span></span>
+                      </p>
+                      <p>
+                      <span >{{ repo.description }}</span>
+                      </p>
+                    </section>
+                  </div>
+                </div>
+              </div>
+              </div>
+
+
+
+ <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+      <div class="mdc-card">
+          <div class="mdc-layout-grid__inner">
+            <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+                      {% if git.branches|length == 0 %}
+
+                    <section class="purchase__card_section">
+                            <h3>Empty repository</h3>
+
+                            <b>Usage:</b>
+                            <pre>
+                    $ git clone ssh@hostname:/repos/user/repo.git
+
+                    $ touch README.md
+                    $ git add README.md
+                    $ git commit -m "initial commit"
+                    $ git push origin master
+                            </pre>
+                  </section>
+            </div>
+
+{% else %}
+  <section class="purchase__card_section">
+    <h2>Branches</h2>
+
+    <form class="form-inline">
+        <div class="form-group">
+            <label for="branch_select">Select branch:</label>
+            <select id="branch_select" class="input-sm form-control">
+            {% for name, sha in git.branches %}
+                <option data-href="{{ path('repo_tree', { 'user' : repo.userId.username, 'repo' : repo.name, 'tree' : name, 'path' : '/' }) }}">{{ name }}</option>
+            {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <button id="branch_submit" class="input-sm form-control btn btn-success btn-xs">Go <i class="mdi mdi-8px mdi-play"></i></button>
+        </div>
+    </form>
+
+    <h2>Tags</h2>
+    {% for tag,sha in git.tags %}
+        <span class="label label-info">{{ tag }}</span>
+    {% endfor %}
+ </section>
+ {% endif %}
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+ {% else %}
+        {{ include("includes/unavbar.html.twig") }}
+        {{ include("includes/profile.html.twig") }}
+            <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-8">
+              <div class="mdc-card">
+                <div class="mdc-layout-grid__inner">
+                  <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-8">
+                    <section class="purchase__card_section">
+                      <p>
+                      <span class="text-red text-uppercase font-weight-bold">Repo: <span class="text-red">{{ repo.name }}</span></span>
+                      </p>
+                       <p>
+                      <span>{{ repo.description }}</span>
+                      </p>
+                    </section>
+                    </div>
+                </div>
+              </div>
+            </div>
+ <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+      <div class="mdc-card">
+          <div class="mdc-layout-grid__inner">
+            <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+                      {% if git.branches|length == 0 %}
+
+                    <section class="purchase__card_section">
+                            <h3>Empty repository</h3>
+
+                            <b>Usage:</b>
+                            <pre>
+                    $ git clone ssh@hostname:/repos/user/repo.git
+
+                    $ touch README.md
+                    $ git add README.md
+                    $ git commit -m "initial commit"
+                    $ git push origin master
+                            </pre>
+                  </section>
+            </div>
+
+{% else %}
+  <section class="purchase__card_section">
+    <h2>Branches</h2>
+
+    <form class="form-inline">
+        <div class="form-group">
+            <label for="branch_select">Select branch:</label>
+            <select id="branch_select" class="input-sm form-control">
+            {% for name, sha in git.branches %}
+                <option data-href="{{ path('repo_tree', { 'user' : repo.userId.username, 'repo' : repo.name, 'tree' : name, 'path' : '/' }) }}">{{ name }}</option>
+            {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <button id="branch_submit" class="input-sm form-control btn btn-success btn-xs">Go <i class="mdi mdi-8px mdi-play"></i></button>
+        </div>
+    </form>
+
+    <h2>Tags</h2>
+    {% for tag,sha in git.tags %}
+        <span class="label label-info">{{ tag }}</span>
+    {% endfor %}
+ </section>
+ {% endif %}
+ </div>
+ </div>
+ </div>
+ </div>
+ </main>
+ </div>
+
+ {% endif %}
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+        $(document).ready(function() {
+           $('#branch_submit').click(function (e) {
+               window.location = $('#branch_select option:selected').data('href');
+               e.preventDefault();
+           });
+        });
+    </script>
+{% endblock %}
+

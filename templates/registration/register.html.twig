@@ -1,0 +1,88 @@
+{% extends 'userbase.html.twig' %}
+{% block body %}
+  {% include('includes/unavbar.html.twig') %}
+<div class="page-wrapper mdc-toolbar-fixed-adjust">
+  <main class="content-wrapper" >
+    <div class="mdc-layout-grid">
+       <div class="mdc-layout-grid__inner">
+          <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+                <div class="mdc-card">
+                   <div class="mdc-layout-grid__inner">
+                        <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-7">
+                           <section class="purchase__card_section">
+                               <div class="card card-signin my-5"  style="background:#00a;color:lightgrey;">
+                                   <div class="card-body">
+                                      <h1 class="card-title text-center font-weight-bold">
+                                       Create Ubucket account!
+                                      </h1>
+                                        <div class="mt-4 font-weight-bold font-14">
+                                          <p>
+                                              <b style="display:block;">Gain Access To ubucket </b>
+                                              <br/>
+
+                                              <span style="display:block;text-indent:15px;" >* Manage repository.</span>
+                                              <br/>
+                                             <span style="display:block;text-indent:15px;" >* Manage group.</span>
+                                             <br/>
+                                             <span style="display:block;text-indent:15px;" >* Share your public repository.</span>
+
+                                          </p>
+                                        </div>
+                                   </div>
+                               </div>
+                           </section>
+                        </div>
+                       <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-5">
+                          <section class="purchase__card_section">
+                            <div class="card card-signin mt-4">
+                              <div class="card-body">
+                               <span class="test-center text-red pl-3" id="general"></span>
+                                <form action="" class="form-signin" method="post">
+                                  <div class="form-label-group">
+                                    <input type="text"  id="fname" name="fname" id="inputf" placeholder="Full Name" class="form-control"  autocomplete="fname" required autofocus>
+                                    <label for="inputf">Full Name</label>
+                                  </div>
+                                  <div class="form-label-group">
+                                    <input type="text"   id="uname" name="uname" id="inputU" placeholder="Username" class="form-control"  autocomplete="uname" required autofocus>
+                                    <label for="inputU">Username</label>
+                                     {% for messages in app.flashes('username') %}
+                                           <span style="color:red;">
+                                             {{ messages }}
+                                           </span>
+
+                                      {% endfor %}
+                                  </div>
+                                  <div class="form-label-group">
+                                    <input type="email"  id="mail"  name="email" id="inputE" placeholder="Email" class="form-control"  autocomplete="email" required autofocus>
+                                    <label for="inputE">Email</label>
+                                   {% for messages in app.flashes('email') %}
+                                           <span style="color:red;">
+                                             {{ messages }}
+                                           </span>
+
+                                      {% endfor %}
+                                  </div>
+                               <div class="form-label-group">
+                                   <input type="password" id="pass" name="pass" id="inputPassword" placeholder="Password" class="form-control"  autocomplete="current-password" required>
+                                    <label for="inputPassword">Password</label>
+                                  </div>
+                                   <div class="form-label-group">
+                                   <input type="password" id="cpass" name="cpass" id="inputC" placeholder="Confirm Password" class="form-control"  autocomplete="current-password" required>
+                                    <label for="inputC">Confirm Password</label>
+                                    <span  id="just"></span>
+                                  </div>
+                                  <button class="form-control btn btn-primary btn-lg  btn-block text-lowercase"  type="submit">create</button>
+                                   </form>
+                              </div>
+                            </div>
+                          </section>
+                        </div>
+                   </div>
+                </div>
+          </div>
+       </div>
+   </div>
+  </main>
+</div>
+
+{% endblock %}

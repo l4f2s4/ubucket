@@ -1,0 +1,182 @@
+{% if app.user != null %}
+ <div class="page-wrapper mdc-toolbar-fixed-adjust">
+  <main class="content-wrapper" style="background:white;">
+    <div class="mdc-layout-grid">
+          <div class="mdc-layout-grid__inner">
+          <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+           <div class="mdc-card">
+                <div class="mdc-layout-grid__inner">
+                  <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+                    <section class="purchase__card_section">
+                      <p>
+                      <span class="text-uppercase font-weight-bold">Repo: <span class="text-red">{{ repo.name }} </span>
+                      {% if repo.groupId %}&nbsp; Group:
+                       <a href="{{ path("grprepos", {  id:repo.groupId.name,grp:repo.groupId.id}) }}" class="btn"><span class="text-red font-weight-bold"> {{repo.groupId.name}} </a>
+                       {% endif %}
+                       </span>
+                      </p>
+                        <p>
+                      <span class="text-lowercase">{{ repo.description }}</span></span>
+                      </p>
+                    </section>
+                  </div>
+                </div>
+           </div>
+      <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+        <div class="mdc-layout-grid">
+          <div class="mdc-layout-grid__inner">
+            <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+              <div class="mdc-card">
+                <div class="mdc-layout-grid__inner">
+                <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+                 <section class="purchase__card_section">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <label for="branch">Branch:</label>
+                            <select id="branch_select" class="form-control input-sm">
+                            {% for name, sha in git.branches %}
+
+                                <option {% if name == branch %}selected{% endif %} data-href="{{ path('repo_tree', { 'user' : repo.userId.username, 'repo' : repo.name, 'tree' : name, 'path' : "/" }) }}">{{ name }}</option>
+                            {% endfor %}
+                            </select>
+                            <button id="branch_submit" class="form-control btn btn-success btn-md input-sm">Go <i class="mdi mdi-8px mdi-play"></i></button>
+                        </div>
+                       </form>
+                    </section>
+                   </div>
+                   </div>
+                </div>
+              </div>
+    </div>
+    </div>
+    </div>
+    </div>
+<div class="col-sm-4">
+{% if git.tags|length %}
+        <form class="form-inline">
+            <div class="form-group">
+                <label for="tag">Tag:</label>
+                <select id="tag_select" class="input-sm form-control">
+                {% for name, sha in git.tags %}
+                    <option {% if name == branch %}selected{% endif %} data-href="{{ path('repo_tree', { 'user' : repo.userId.username, 'repo' : repo.name, 'tree' : name, 'path' : "/" }) }}">{{ name }}</option>
+                {% endfor %}
+                </select>
+                <button id="tag_submit" class="form-control btn btn-success btn-xs input-sm">Go <i class="mdi mdi-8px mdi-play"></i></button>
+            </div>
+        </form>
+{% endif %}
+    </div>
+    {# <div class="col-sm-4">
+        <a href="#" class="pull-right btn btn-info btn-sm"><i class="fa fa-balance-scale"></i> License</a>
+    </div> #}
+</div>
+
+<div class="row well-sm">
+    <div class="col-xs-12">
+        <ul class="breadcrumb">
+          Path:
+{% for element in crumbtrail %}
+          <li {% if loop.last %}class="active"{% endif %}><a href="{{ element.href }}" class="btn">{{ element.name }}</a></li>
+{% endfor %}
+        </ul>
+    </div>
+    <div class="col-xs-12">
+        <table class="table table-condensed">
+            <tr>
+                <td><a href="{{ path('commits_log', { 'user' : repo.userId.username, 'repo' : repo.name, 'tree' : branch, 'path' : "/" }) }}" class="btn text-primary font-weight-bold"><i class="mdi mdi-24px mdi-chart-line-variant" style="color:lightgrey;"></i> commits <span class="badge bg-danger">{{ repo.totalCommits }}</span> </td>
+                <td> <a href="{{ path('repo_contributors', { user: repo.userId.username, repo: repo.name, 'branch' : branch }) }}" class="btn text-primary font-weight-bold"><i class="mdi mdi-24px  mdi-account" style="color:lightgrey;"></i> contributors <span class="badge bg-danger">{{ repo.contributors | length }}</span> </a></td>
+                <td><a href="{{ path('tree_graph', { 'user' : repo.userId.username, 'repo' : repo.name, 'tree' : branch, 'path' : "/" }) }}" class="btn text-primary font-weight-bold"> <i class="mdi mdi-24px mdi-eye" style="color:lightgrey;"></i> Graph</a></td>
+                <td><a href="{{ path('stats', { user: repo.userId.username, repo: repo.name, 'branc' : branch, 'path' : "/" }) }}" class="btn text-primary font-weight-bold"><i class="mdi mdi-24px mdi-star" style="color:lightgrey;"></i> stats</a></td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+
+{% else %}
+   <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-8">
+           <div class="mdc-card">
+              <div class="mdc-layout-grid__inner">
+                <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-8">
+                    <section class="purchase__card_section">
+                      <p>
+                      <span class="text-uppercase font-weight-bold">Repo: <span class="text-red">{{ repo.name }} </span>
+                      {% if repo.groupId %}&nbsp; Group:
+                       <a href="{{ path("grprepos", {  id:repo.groupId.name,grp:repo.groupId.id}) }}" class="btn"><span class="text-red font-weight-bold"> {{repo.groupId.name}} </a>
+                       {% endif %}
+                       </span>
+                      </p>
+                        <p>
+                      <span class="text-lowercase">{{ repo.description }}</span>
+                      </p>
+                    </section>
+                </div>
+              </div>
+           </div>
+   </div>
+    <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+        <div class="mdc-card">
+           <div class="mdc-layout-grid__inner">
+             <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-8">
+              <section class="purchase__card_section">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <label for="branch">Branch:</label>
+                            <select id="branch_select" class="form-control input-sm">
+                            {% for name, sha in git.branches %}
+
+                                <option {% if name == branch %}selected{% endif %} data-href="{{ path('repo_tree', { 'user' : repo.userId.username, 'repo' : repo.name, 'tree' : name, 'path' : "/" }) }}">{{ name }}</option>
+                            {% endfor %}
+                            </select>
+                            <button id="branch_submit" class="form-control btn btn-success btn-md input-sm">Go <i class="mdi mdi-8px mdi-play"></i></button>
+                        </div>
+                       </form>
+              </section>
+              </div>
+           </div>
+        </div>
+    </div>
+
+    <div class="col-sm-4">
+{% if git.tags|length %}
+        <form class="form-inline">
+            <div class="form-group">
+                <label for="tag">Tag:</label>
+                <select id="tag_select" class="input-sm form-control">
+                {% for name, sha in git.tags %}
+                    <option {% if name == branch %}selected{% endif %} data-href="{{ path('repo_tree', { 'user' : repo.userId.username, 'repo' : repo.name, 'tree' : name, 'path' : "/" }) }}">{{ name }}</option>
+                {% endfor %}
+                </select>
+                <button id="tag_submit" class="form-control btn btn-success btn-xs input-sm">Go <i class="mdi mdi-8px mdi-play"></i></button>
+            </div>
+        </form>
+{% endif %}
+    </div>
+    {# <div class="col-sm-4">
+        <a href="#" class="pull-right btn btn-info btn-sm"><i class="fa fa-balance-scale"></i> License</a>
+    </div> #}
+</div>
+
+<div class="row well-sm">
+    <div class="col-xs-12">
+        <ul class="breadcrumb">
+          Path:
+{% for element in crumbtrail %}
+          <li {% if loop.last %}class="active"{% endif %}><a href="{{ element.href }}">{{ element.name }}</a></li>
+{% endfor %}
+        </ul>
+    </div>
+    <div class="col-xs-12">
+        <table class="table table-condensed">
+            <tr>
+                <td><a href="{{ path('commits_log', { 'user' : repo.userId.username, 'repo' : repo.name, 'tree' : branch, 'path' : "/" }) }}" class="btn text-primary font-weight-bold"><i class="mdi mdi-24px mdi-chart-line-variant" style="color:lightgrey;"></i> commits <span class="badge bg-danger">{{ repo.totalCommits }}</span> </td>
+                <td> <a href="{{ path('repo_contributors', { user: repo.userId.username, repo: repo.name, 'branch' : branch }) }}" class="btn text-primary font-weight-bold"><i class="mdi mdi-24px  mdi-account" style="color:lightgrey;"></i> contributors <span class="badge bg-danger">{{ repo.contributors | length }}</span> </a></td>
+                <td><a href="{{ path('tree_graph', { 'user' : repo.userId.username, 'repo' : repo.name, 'tree' : branch, 'path' : "/" }) }}" class="btn text-primary font-weight-bold"> <i class="mdi mdi-24px mdi-eye" style="color:lightgrey;"></i> Graph</a></td>
+                <td><a href="{{ path('stats', { user: repo.userId.username, repo: repo.name, 'branc' : branch, 'path' : "/" }) }}" class="btn text-primary font-weight-bold"><i class="mdi mdi-24px mdi-star" style="color:lightgrey;"></i> stats</a></td>
+        </table>
+    </div>
+</div>
+
+ {% endif %}
+
+

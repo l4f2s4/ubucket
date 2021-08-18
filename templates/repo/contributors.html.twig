@@ -1,0 +1,77 @@
+{% extends "userbase.html.twig" %}
+
+{% block title %}Repo {{ repo.name }}{% endblock %}
+
+{% block body %}
+{% if app.user == null %}
+    {{ include("includes/unavbar.html.twig") }}
+    {{ include("includes/profile.html.twig") }}
+{% endif %}
+ {% if app.user != null %}
+   {% if app.user.title == 'administrator' or app.user.title == 'superadmin' %}
+      {{ include("profile/usermenu.html.twig") }}
+   {% else %}
+    {{ include("includes/usermenu.html.twig") }}
+   {% endif%}
+{% endif %}
+  <div class="page-wrapper mdc-toolbar-fixed-adjust">
+  <main class="content-wrapper" style="background:transparent;">
+    <div class="mdc-layout-grid">
+          <div class="mdc-layout-grid__inner">
+            <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+              <div class="mdc-card">
+                <div class="mdc-layout-grid__inner">
+                  <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-8">
+                    <section class="purchase__card_section">
+                      <p>
+                      <span class="text-uppercase font-weight-bold">Repo: <span class="text-red">{{ repo.name }}</span></span>
+                      </p>
+                        <p>
+                      <span class="text-lowercase">{{ repo.description }}</span></span>
+                      </p>
+                    </section>
+                  </div>
+
+                </div>
+              </div>
+          </div>
+
+<div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+    <div class="mdc-layout-grid">
+          <div class="mdc-layout-grid__inner">
+            <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+
+                        <p>A list of all contributors of this repository based on commits.</p>
+
+                        <div id="contributor-scroll">
+                            {% include "repo/fragments/contributors.html.twig" %}
+                        </div>
+            </div>
+          </div>
+    </div>
+</div>
+</div>
+
+</main>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="/js/jquery.scroll.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+            $('#contributor-scroll').jscroll({
+                loadingHtml: '<img src="/bundles/framework/images/grey_magnifier.png" alt="Loading" /> Loading...',
+                padding: 20,
+                autoTriggerUntil: 3,
+                debug: true
+            });
+
+        });
+    </script>
+
+{% endblock %}

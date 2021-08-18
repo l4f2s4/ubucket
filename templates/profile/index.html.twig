@@ -1,0 +1,122 @@
+{% extends 'userbase.html.twig' %}
+{% block body %}
+{% if app.user %}
+  {% include('profile/usermenu.html.twig') %}
+
+  <div class="page-wrapper mdc-toolbar-fixed-adjust">
+      <main class="content-wrapper" style="background:transparent;">
+        <div class="mdc-layout-grid">
+          <div class="mdc-layout-grid__inner">
+            <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+              <div class="mdc-card">
+                <div class="mdc-layout-grid__inner">
+                  <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-8">
+                    <section class="purchase__card_section">
+                      <p>Welcome
+                      <span class="text-red text-uppercase font-weight-bold">{{ app.user.username }}</span>
+                      </p>
+                    </section>
+                  </div>
+                  <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-4">
+                    <section class="purchase__card_section">
+                      <p>
+                      <span class="text-red font-weight-bold">System Administrator</span>
+                      </p>
+                    </section>
+                  </div>
+                </div>
+              </div>
+            </div>
+            </div>
+          </div>
+
+          <!-- main body -->
+         <div class="mdc-layout-grid">
+          <div class="mdc-layout-grid__inner">
+            <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-6">
+              <div class="mdc-card">
+                <div class="mdc-layout-grid__inner">
+                  <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-6">
+                    <section class="purchase__card_section">
+                      <p>
+                      <span class="mb-3 text-primary font-weight-bold" > Joining Users</span>
+                      <span class="badge bg-danger">{{ join | length }}</span>
+                      </p>
+                    </section>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-6">
+              <div class="mdc-card">
+                <div class="mdc-layout-grid__inner">
+                  <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-6">
+                    <section class="purchase__card_section">
+                      <p>
+                      <span class="mb-3 text-primary font-weight-bold" > Public Repositories</span>
+                      <span class="badge bg-danger">{{ public | length }}</span>
+                      </p>
+                    </section>
+                  </div>
+                </div>
+              </div>
+              </div>
+            </div>
+                <!-- main body -->
+                 <!-- main body -->
+         <div class="mdc-layout-grid">
+          <div class="mdc-layout-grid__inner">
+            <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-6">
+              <div class="mdc-card">
+                <div class="mdc-layout-grid__inner">
+                  <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-6">
+                   <section class="purchase__card_section">
+                      <p>
+                      <span class="mb-3 text-primary font-weight-bold" > Privilege  Users</span>
+                      <span class="badge bg-danger">{{ privilege | length }}</span>
+                      </p>
+                    </section>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-6">
+              <div class="mdc-card">
+                <div class="mdc-layout-grid__inner">
+                  <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-6">
+                   <section class="purchase__card_section">
+                      <p>
+                      <span class="mb-3 text-primary font-weight-bold" > Private Repositories</span>
+                      <span class="badge bg-danger">{{ private | length }}</span>
+                      </p>
+                    </section>
+                  </div>
+                </div>
+              </div>
+              </div>
+            </div>
+                <!-- main body -->
+
+                      <!-- main body -->
+         <div class="mdc-layout-grid">
+          <div class="mdc-layout-grid__inner">
+            <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-6">
+              <div class="mdc-card">
+                <div class="mdc-layout-grid__inner">
+                  <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-6">
+                  <section class="purchase__card_section">
+                      <p>
+                      <span class="mb-3 text-primary font-weight-bold" > Group Available</span>
+                      <span class="badge bg-danger">{{ group | length }}</span>
+                      </p>
+                    </section>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+           <!-- main body -->
+      </main>
+</div>
+{% endif %}
+{% endblock %}

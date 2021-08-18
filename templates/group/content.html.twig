@@ -1,0 +1,346 @@
+{% extends 'userbase.html.twig' %}
+{% block body %}
+{% if app.user %}
+   {% if app.user.title == 'administrator' or app.user.title == 'superadmin' %}
+      {{ include("profile/usermenu.html.twig") }}
+   {% else %}
+    {{ include("includes/usermenu.html.twig") }}
+   {% endif%}
+  <div class="page-wrapper mdc-toolbar-fixed-adjust">
+      <main class="content-wrapper">
+      <!-- start -->
+        <div class="mdc-layout-grid">
+          <div class="mdc-layout-grid__inner">
+            <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+              <div class="mdc-card">
+                <div class="mdc-layout-grid__inner">
+                  <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-5">
+                    <section class="purchase__card_section">
+                      <p class="font-weight-bold" style="color:black;"> <span class="text-red text-uppercase">{{ group }}</span> Group </p>
+                       <p> <span class="badge bg-danger" style="border-radius:50%;">{{member|length}}</span><span class="font-weight-bold"> Member</span>
+                       &nbsp;
+                       {% if repo != 0 %}
+
+                        <a href="/pathcontent/{{ group }}/{{grp}}/grprepos" class="btn btn-success text-lowercase" >
+                              <span class="badge bg-primary" style="border-radius:50%;">{{repo}}</span>
+                                 View Repository
+                         </a>
+                       {% else %}
+                       <a href="#" class="btn btn-success text-lowercase" data-bs-toggle="modal" data-bs-target="#myForm">
+                                       Create repository
+                        </a>
+                           <!---START TEST--->
+                                    <div class="modal fade" id="myForm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+                                      <div class="modal-dialog modal-md" >
+                                        <div class="modal-content" >
+                                          <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel" style="padding-left:40%;">Create Repository</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                          </div>
+                                           <div class="modal-body" >
+                                              <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+                                                <div class="mdc-card">
+                                                 {{ form_start(repo_form) }}
+                                                   <section class="mdc-card__supporting-text">
+                                                   <!-- Name area-->
+                                                    <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12-desktop">
+                                                        <div class="template-demo">
+                                                           <div id="demo-tf-box-leading-wrapper">
+                                                            <div id="tf-box-leading-test" >
+                                                                 {{ form_row(repo_form.name) }}
+                                                           </div>
+                                                          </div>
+                                                        </div>
+                                                    </div>
+                                                     <!-- description area-->
+                                                    <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12-desktop">
+                                                        <div class="template-demo">
+                                                           <div id="demo-tf-box-leading-wrapper">
+                                                                 {{ form_row(repo_form.description) }}
+                                                           </div>
+                                                        </div>
+                                                    </div>
+                                                     <!-- visibility area-->
+                                                    <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12-desktop">
+                                                        <div class="template-demo">
+                                                           <div id="demo-tf-box-leading-wrapper">
+
+                                                                 {{ form_row(repo_form.visibility) }}
+
+                                                           </div>
+                                                        </div>
+                                                    </div>
+
+                                                        <button type="submit" class="btn btn-success">Create repository</button>
+                                                        {{ form_end(repo_form) }}
+                                                   </section>
+                                                 </div>
+                                              </div>
+                                           </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <!--END TEST-->
+                         {% endif %}
+
+                       </p>
+                    </section>
+                  </div>
+                    <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-3">
+                    <section class="purchase__card_section">
+                      <p >
+
+                        <a href="{{ path("video", {  id:group,grp:grp}) }}" class="btn btn-primary text-lowercase" >
+                                 Code Video room
+                         </a>
+
+                      </p>
+                      <p class="font-weight-bold">  <span class="badge bg-danger">{{ oldchat|length }}</span> message</p>
+                    </section>
+                  </div>
+                   <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-4">
+                    <section class="purchase__card_section">
+                      <p class="text-red font-weight-bold">
+                           {% for messages in app.flashes('success') %}
+                              {{ messages}}
+                           {% endfor %}
+                      </p>
+                    </section>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--end-->
+            <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-4 mb-3">
+                  <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12 mb-3">
+                      <div class="wrapper-user mb-4">
+                         <div class="main-user">
+                            <div class="px-2 scroll-user">
+                             {% for i in member %}
+                              {% if app.user.Username == name %}
+                                  {% if i.username == name %}
+                                    <div class="d-flex align-items-center">
+                                       <div class="text-left pr-1">
+                                        {% if  i.userimage| length !=0 %}
+                                             <img src="{{ asset('/web/uploads/photos/' ~ i.userimage) }}" width="30" style="border-radius:50%;" class="img1"  alt="not found"  />
+                                          {% else %}
+                                                 <img   src="/images/users.png" width="30" style="border-radius:50%;" class="img1" alt="...">
+                                          {% endif %}
+
+                                        </div>
+                                        <div class="pr-2 pl-1"> <span class="name">{{ name }}</span>
+                                            <p class="msg">Admin</p>
+                                        </div>
+                                     </div>
+                                  {% else %}
+                                  <br/>
+                                   <div class="d-flex align-items-center">
+                                        <div class="text-left pr-1">
+                                         {% if  i.userimage| length !=0 %}
+                                             <img src="{{ asset('/web/uploads/photos/' ~ i.userimage) }}" width="30" style="border-radius:50%;" class="img1"  alt="not found"  />
+                                          {% else %}
+                                                 <img   src="/images/users.png" width="30" style="border-radius:50%;" class="img1" alt="...">
+                                          {% endif %}
+                                        </div>
+                                        <div class="pr-2 pl-1"> <span class="name">{{ i.username }}</span>
+                                        </div>
+                                        <div class="pr-2 pl-1">
+                                        <a href="/Member/{{ group }}/{{grp}}/remove/{{ i.username }}" class="btn btn-sm align-items-end btn-danger text-lowercase" >
+                                           remove member
+                                       </a>
+                                       </div>
+                                    </div>
+                                {% endif %}
+                              {% else %}
+                                     {% if i.username == name %}
+                                    <div class="d-flex align-items-center">
+                                       <div class="text-left pr-1">
+                                        {% if  i.userimage| length !=0 %}
+                                             <img src="{{ asset('/web/uploads/photos/' ~ i.userimage) }}" width="30" style="border-radius:50%;" class="img1"  alt="not found"  />
+                                          {% else %}
+                                                 <img   src="/images/users.png" width="30" style="border-radius:50%;" class="img1" alt="...">
+                                          {% endif %}
+
+                                        </div>
+                                        <div class="pr-2 pl-1"> <span class="name">{{ name }}</span>
+                                            <p class="msg">Admin</p>
+                                        </div>
+                                     </div>
+                                  {% else %}
+                                   <div class="d-flex align-items-center">
+                                        <div class="text-left pr-1">
+                                         {% if  i.userimage| length !=0 %}
+                                             <img src="{{ asset('/web/uploads/photos/' ~ i.userimage) }}" width="30" style="border-radius:50%;" class="img1"  alt="not found"  />
+                                          {% else %}
+                                                 <img   src="/images/users.png" width="30" style="border-radius:50%;" class="img1" alt="...">
+                                          {% endif %}
+                                        </div>
+                                        <div class="pr-2 pl-1"> <span class="name">{{ i.username }}</span>
+                                        </div>
+                                     {% if app.user.Username == i.username %}
+                                       <div class="pr-2 pl-1">
+                                        <a href="/Member/{{ group }}/{{grp}}/remove/{{ i.username }}" class="btn btn-sm align-items-end btn-danger text-lowercase" >
+                                           leaves group
+                                       </a>
+                                       </div>
+                                      {% endif %}
+                                    </div>
+                                {% endif %}
+                              {% endif %}
+                             {% endfor %}
+                            </div>
+                             <nav class="navbar-test bg-white navbar-expand-sm d-flex justify-content-between">
+                                 <form action="" method="post">
+                                  <input type="text" name="member" id="pass" class="form-control" placeholder="Enter username..." required />
+                                   <button type="submit" class="btn  btn-primary">Add</button>
+                                 </form>
+                            </nav>
+                         </div>
+                      </div>
+                  </div>
+                  </div>
+                    <!-- body chat -->
+                  <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-7">
+                       <div class="wrapper-test ">
+                         <div class="main-test">
+                            <div class="px-4 scroll">
+                            <div class="test">
+                            {% if oldchat %}
+                            {% for i in oldchat %}
+                              {% if i.username == app.user.username %}
+                                <div class="d-flex align-items-center">
+                                    <div class="text-left pr-1"><img src="/images/images.jpg" width="30" style="border-radius:50%;" class="img1" /></div>
+                                    <div class="sent pr-2 pl-1"> <span class="name">{{i.username}}</span>
+                                        <p class="msg">{{i.msg}} <br/> <span style="color:lightgrey;">{{ i.times }}</span></p>
+                                    </div>
+
+                                </div>
+                                {% else %}
+                               <div class="d-flex align-items-center text-right justify-content-end ">
+                                    <div class="rec pr-2"> <span class="name">{{i.username}}</span>
+                                        <p class="sms">{{i.msg}}<br/> <span style="color:lightgrey;">{{ i.times }}</span></p>
+                                    </div>
+                                    <div><img src="/images/user.jpg" width="30" style="border-radius:50%;" class="img1" /></div>
+
+                                </div>
+                                {% endif %}
+                             {% endfor %}
+                             {% else %}
+                             <p class="text-center font-weight-bold text-primary"><i class="mdi mdi-8px mdi-chat"></i>&nbsp;Start chat ...</p>
+                             {% endif %}
+                              </div>
+
+                            </div>
+                             <nav class="navbar-test bg-white navbar-expand-sm d-flex justify-content-between"> <input type="text" id="data" name="text" class="form-control" placeholder="Type a message..." required>
+                                                 <button id="send-btn" class="btn btn-primary"><i class="mdi mdi-8px mdi-send"></i></button>
+                            </nav>
+                         </div>
+                      </div>
+                  </div>
+
+                  <!-- body chat -->
+                  {#% if repo == 0 and app.user.username == name %}
+              <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-3">
+
+                <div class="mdc-layout-grid__inner">
+                  <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+                    <section class="purchase__card_section">
+                     <a href="#" class="col btn btn-md btn-danger text-lowercase mb-0" data-bs-toggle="modal" data-bs-target="#deleteform" data-mdc-auto-init="MDCRipple">Delete group</a>
+                                  	<!-- delete Modal -->
+											<div class="modal custom-modal fade" id="deleteform" role="dialog">
+												<div class="modal-dialog modal-dialog-centered">
+													<div class="modal-content">
+														<div class="modal-body">
+															<div class="form-header">
+
+																<p class="text-red">Are you sure,you want to delete this group?</p>
+															</div>
+															<div class="modal-btn delete-action">
+																<div class="row">
+																	<div class="col-6">
+																		<a href="{{ path("removeemptygroup", {  id:group,grp:grp}) }}" class="btn btn-md btn-danger continue-btn">delete</a>
+																	</div>
+																	<div class="col-6">
+																		<a href="javascript:void(0);" data-bs-dismiss="modal" class="btn btn-md btn-secondary text-white cancel-btn">Cancel</a>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+															<!-- /delete Modal -->
+                                    </section>
+                           </div>
+                           </div>
+                           </div>
+                       </div>
+                  {% endif %#}
+                  <!-- end -->
+            </div>
+          </div>
+
+  </main>
+</div>
+
+ <script type="text/javascript">
+
+   $(document).ready(function()
+			{
+				var repo = new Bloodhound(
+					{
+						datumTokenizer: Bloodhound.tokenizers.whitespace,
+                                    queryTokenizer: Bloodhound.tokenizers.whitespace,
+
+						remote: {
+							url: "{{ path('search') }}/%QUERY%",
+                            wildcard: '%QUERY%',
+							filter: function(repo)
+							{
+								return $.map(repo, function(rep)
+								{
+									return {
+										rep_name: rep.username,
+										//rep_disc: rep.description,
+										rep_id: rep.id,
+										//user: rep.userId
+									}
+								})
+							}
+						}
+					})
+					repo.initialize();
+	                     $('#pass').typeahead(
+						{
+							hint: true
+						},
+						{
+							name: 'repo',
+							source: repo.ttAdapter(),
+							display: 'rep_name',
+							templates: {
+								suggestion: function (data)
+								{
+									return '<div class="suggests"><strong class="text-red text-center">'+data.rep_name +'</strong></div>'
+								}
+							}
+						})
+			})
+        $(document).ready(function(){
+            $("#send-btn").on("click", function(){
+                $value = $("#data").val();
+                $msgbox = '<div class="d-flex align-items-center"><div class="text-left pr-1"><img src="/images/images.jpg" width="30" style="border-radius:50%;" class="img1" /></div><div class="sent pr-2 pl-1"> <span class="name">{{app.user.username}}</span><p class="msg">'+ $value +'<br/> <span style="color:lightgrey;">{{ today }}</span></p></div></div>';
+                $(".test").append($msgbox);
+                $("#data").val('');
+                 $.ajax({
+                    url: '/message/pass/{{grp}}',
+                    type: 'POST',
+                    data: 'lafesa='+$value,
+
+                    });
+            });
+        });
+    </script>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,32 @@
+services:
+    # Generic git service factory that can generate Git Services, as they are instantiated per repository
+    app.git_service_factory:
+        class: App\Service\GitServiceFactory
+        arguments: [ "%git_repo_path%", "@app.git_logger", "@snc_redis.default" ]
+
+    git_service_factory:
+        alias: app.git_service_factory
+
+    app.repo_service:
+        class: App\Service\RepoService
+        arguments: [ "%git_repo_path%" ]
+
+    repo_service:
+        alias: app.repo_service
+
+    app.git_logger:
+        class: App\Logger\GitLogger
+
+    git_logger:
+        alias: app.git_logger
+
+    app.git_collector:
+        class: App\DataCollector\GitCollector
+        arguments: [ "@app.git_logger" ]
+        public: false
+        tags:
+            - { name: data_collector, template: 'DataCollector/template.html.twig', id: "git.collector" }
+
+    app.data_object_factory:
+        class: App\DataObject\DataObjectFactory
+        arguments: [ "@git_service_factory" ]

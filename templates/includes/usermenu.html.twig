@@ -1,0 +1,120 @@
+{% if app.user != null %}
+    <div class="body-wrapper"  >
+    <!-- partial:partials/_sidebar.html -->
+    <aside class="mdc-persistent-drawer mdc-persistent-drawer--open" >
+      <nav class="mdc-persistent-drawer__drawer" style="background:rgba(57, 7, 150, 0.90);overflow:hidden;">
+        <div class="mdc-persistent-drawer__toolbar-spacer">
+           <h2 class="brand-logo">
+              <i class="mdi  mdi-24px mdi-bucket mr-1" style="color:#00a;"></i> <i class="material-icons mdc-theme--primary mr-1">UBUCKECT</i>
+					</h2>
+        </div>
+        <div class="mdc-list-group">
+          <nav class="mdc-list mdc-drawer-menu " >
+            <div class="mdc-list-item mdc-drawer-item">
+              <a class="active mdc-drawer-link text-white font-weight-bold " href="{{path('home')}}" >
+               <i class="mdi mdi-24px mdi-home" style="color:lightgrey;"></i>&nbsp;  Dashboard
+              </a>
+            </div>
+             <div class="mdc-list-item mdc-drawer-item">
+              <a class="mdc-drawer-link text-white font-weight-bold" href="{{path('work')}}" >
+               <i class="mdi mdi-24px mdi-source-repository-multiple" style="color:lightgrey;"></i>&nbsp; Repositories  &nbsp;<span class="badge bg-secondary" > {{ app.user.repos.count }}</span>
+              </a>
+            </div>
+            <div class="mdc-list-item mdc-drawer-item">
+              <a class="mdc-drawer-link text-white font-weight-bold" href="{{path('grpavailable')}}" >
+               <i class="mdi mdi-24px mdi-group" style="color:lightgrey;"></i>&nbsp;Groups &nbsp; <span class="badge bg-secondary" > {{ app.user.groupTs.count }}</span>
+              </a>
+            </div>
+            <div class="mdc-list-item mdc-drawer-item purchase-link">
+              <a href="{{ path('app_update_pass') }}" class="mdc-button mdc-button--raised mdc-button--dense mdc-drawer-link" data-mdc-auto-init="MDCRipple">
+                  <i class="mdi mdi-24px mdi-lock-open-alert" style="color:lightgrey;"></i> &nbsp;Change password
+              </a>
+            </div>
+          </nav>
+        </div>
+      </nav>
+    </aside>
+    <!-- partial -->
+    <!-- partial:partials/_navbar.html -->
+    <header class="mdc-toolbar mdc-elevation--z4 mdc-toolbar--fixed"  style="background:rgba(57, 7, 150, 0.90);">
+      <div class="mdc-toolbar__row">
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+          <a href="#" class="menu-toggler mdc-toolbar__menu-icon"><i class="mdi mdi-24px mdi-menu text-white"></i></a>
+        </section>
+         <section class="mdc-toolbar__section mdc-toolbar__section--align-center">
+            <span class="mdc-toolbar__input ">
+            <div class="mdc-text-field">
+              <input type="text" id="myinput" class="form-control" id="css-only-text-field-box" placeholder="Search...">
+            </div>
+          </span>
+        </section>
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-end" role="toolbar">
+          <div class="mdc-menu-anchor mr-1">
+            <a href="#" class="mdc-toolbar__icon toggle mdc-ripple-surface" data-toggle="dropdown" toggle-dropdown="logout-menu" data-mdc-auto-init="MDCRipple">
+               <i class="mdi mdi-24px mdi-dots-vertical text-white"></i>
+            </a>
+            <div class="mdc-simple-menu mdc-simple-menu--right" tabindex="-1" id="logout-menu">
+                <ul class="mdc-simple-menu__items mdc-list" role="menu" aria-hidden="true">
+                  <li class="mdc-list-item" role="menuitem" tabindex="0">
+                    <a href="{{path('logout')}}" class="btn" style="background:transparent;"><i class="mdi  mdi-24px mdi-logout mr-1" style="color:#00a;"></i>
+                    Logout</a>
+                  </li>
+                </ul>
+            </div>
+          </div>
+        </section>
+      </div>
+    </header>
+    <!-- partial -->
+   <script type="text/javascript">
+   
+   $(document).ready(function()
+			{
+				var repo = new Bloodhound(
+					{
+						datumTokenizer: Bloodhound.tokenizers.whitespace,
+                        queryTokenizer: Bloodhound.tokenizers.whitespace,
+
+						remote: {
+							url: "{{ path('handle_search') }}/%QUERY%",
+                            wildcard: '%QUERY%',
+							filter: function(repo)
+							{
+								return $.map(repo, function(rep)
+								{
+									return {
+										rep_name: rep.name,
+										rep_disc: rep.description,
+										rep_id: rep.id,
+
+									}
+								})
+							}
+						}
+					})
+					repo.initialize();
+	                $('#myinput').typeahead(
+						{
+							hint: true
+						},
+						{
+							name: 'repo',
+							source: repo.ttAdapter(),
+							display: 'rep_name',
+							templates: {
+								suggestion: function (data)
+								{
+									return '<div class="suggest" style="background-color:#00a;"> <a href ="{{ path('repos_page') }}/'+data.rep_id+'" class="btn"> <strong class="text-white">'+data.rep_name +'</strong> <span class="text-white"><i>'+ data.rep_disc+'</i></span> </a> </div>'
+								},
+								footer: function (query)
+								{
+									return '<div id="neno" class="text-center"> Results for: '+ query.query +' </div>'
+								}
+							}
+						})		
+			})
+    </script>
+
+   {% endif %}
+
+   

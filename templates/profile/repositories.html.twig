@@ -1,0 +1,158 @@
+{% extends 'userbase.html.twig' %}
+{% block body %}
+{% if app.user %}
+  {% include('profile/usermenu.html.twig') %}
+
+  <div class="page-wrapper mdc-toolbar-fixed-adjust">
+      <main class="content-wrapper">
+      <!-- start -->
+        <div class="mdc-layout-grid">
+          <div class="mdc-layout-grid__inner">
+            <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+              <div class="mdc-card">
+                <div class="mdc-layout-grid__inner">
+                  <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-9">
+                    <section class="purchase__card_section">
+                      <p class="text-red font-weight-bold"><span class="badge bg-danger mr-1">{{ display|length }}</span> Repositories</p>
+                    </section>
+                  </div>
+       <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-3">
+                          <section class="purchase__card_section">
+                                   <a href="#" class="btn btn-primary text-lowercase" data-bs-toggle="modal" data-bs-target="#myForm">
+                                       Create repository
+                                    </a>
+                           </section>
+                           <!---START TEST--->
+                                    <div class="modal fade" id="myForm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+                                      <div class="modal-dialog modal-md" >
+                                        <div class="modal-content" >
+                                          <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel" style="padding-left:40%;">Create Repository</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                          </div>
+                                           <div class="modal-body" >
+                                              <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+                                                <div class="mdc-card">
+                                                 {{ form_start(repo_form) }}
+                                                   <section class="mdc-card__supporting-text">
+                                                   <!-- Name area-->
+                                                    <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12-desktop">
+                                                        <div class="template-demo">
+                                                           <div id="demo-tf-box-leading-wrapper">
+                                                            <div id="tf-box-leading-test" >
+                                                                 {{ form_row(repo_form.name) }}
+
+                                                           </div>
+                                                          </div>
+                                                        </div>
+                                                    </div>
+                                                     <!-- description area-->
+                                                    <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12-desktop">
+                                                        <div class="template-demo">
+                                                           <div id="demo-tf-box-leading-wrapper">
+                                                                 {{ form_row(repo_form.description) }}
+                                                           </div>
+                                                        </div>
+                                                    </div>
+                                                     <!-- visibility area-->
+                                                    <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12-desktop">
+                                                        <div class="template-demo">
+                                                           <div id="demo-tf-box-leading-wrapper">
+
+                                                                 {{ form_row(repo_form.visibility) }}
+
+                                                           </div>
+                                                        </div>
+                                                    </div>
+
+                                                        <button type="submit" class="btn btn-success" onclick="javascript:removeChar()">Create repository</button>
+                                                        {{ form_end(repo_form) }}
+                                                   </section>
+                                                 </div>
+                                              </div>
+                                           </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <!--END TEST-->
+                           </div>
+                          </div>
+                </div>
+              </div>
+          </div>
+
+            <!--start table-->
+           <div class="mdc-layout-grid__cell stretch-card mdc-layout-grid__cell--span-12">
+              <div class="mdc-card table-responsive" style="overflow-x:auto;">
+                <div class="card text-primary font-weight-bold" style="overflow-x:auto;">
+                 <div class="card-body">
+                    <table id="zero_config" class="table table-striped" style="width:100%">
+                      <thead >
+                        <tr >
+                          <th>#</th>
+                          <th class="text-left">Repo Name</th>
+                          <th >Description</th>
+                          <th>Created By </th>
+                          <th >visibility</th>
+                          <th>Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                       {% for temp,show in display %}
+                            <tr>
+                              <td>{{ temp +1 }}</td>
+                              <td class="text-left">{{ show.name }}</td>
+                              <td >{{ show.description }}</td>
+                               {% for test in verify %}
+                                  {% if test.id == show.id %}
+                                     <td style="font-weight:bold;color:blue;"> {{test.username}}</td>
+                                  {% endif %}
+                              {% endfor %}
+                              <td>
+                              {% if show.visibility == 1 %}
+                               <span class="text-green font-weight-bold">private</span>
+                              {% else %}
+                              <span class="text-red font-weight-bold"> public</span>
+                              {% endif%}
+                              </td>
+                              <td>
+                               <a href="{{ path("repo", { user: user.username, repo: show.name,id: show.id }) }}" class="col btn btn-md btn-success" data-mdc-auto-init="MDCRipple">View</a>
+                             </td>
+                            </tr>
+                       {% endfor %}
+                        </tbody>
+                      </table>
+                      </div>
+                 </div>
+              </div>
+            </div>
+            <!--end table -->
+      </main>
+</div>
+ <script>
+ $(document).ready(function() {
+    $('#zero_config').DataTable( {
+        responsive: {
+            details: {
+                display: $.fn.dataTable.Responsive.display.modal( {
+                    header: function ( row ) {
+                        var data = row.data();
+                        return 'Details for '+data[0]+' '+data[1];
+                    }
+                } ),
+                renderer: $.fn.dataTable.Responsive.renderer.tableAll( {
+                    tableClass: 'table'
+                } )
+            }
+        }
+    } );
+} );
+
+
+
+ </script>
+
+
+{% endif %}
+
+{% endblock %}
